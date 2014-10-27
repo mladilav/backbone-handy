@@ -1,0 +1,64 @@
+<html> 
+  <head> 
+    <title>Геокодирование с использованием API Google Maps v3</title> 
+ 
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
+    <script type="text/javascript" src="/js/vendor/jquery-2.1.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+	<style>
+	.ui-autocomplete {
+	background-color: white;
+	width: 300px;
+	border: 1px solid #cfcfcf;
+	list-style-type: none;
+	padding-left: 0px;
+}
+	</style>
+ 
+ 
+<script type="text/javascript">
+ 
+    var geocoder;
+    var map;
+    var marker;
+
+    function initialize(){
+
+      //Определение геокодера
+      geocoder = new google.maps.Geocoder();
+
+    }
+
+    $(document).ready(function() { 
+
+      initialize();
+
+      $(function() {
+        $("#address").autocomplete({
+          //Определяем значение для адреса при геокодировании
+          source: function(request, response) {
+            geocoder.geocode( {'address': request.term}, function(results, status) {
+              response($.map(results, function(item) {
+                  //alert(item.formatted_address);
+                return {
+                  label:  item.formatted_address,
+                  value: item.formatted_address,
+                  latitude: item.geometry.location.lat(),
+                  longitude: item.geometry.location.lng()
+                }
+              }));
+            });
+          },
+          //Выполняется при выборе конкретного адреса
+          select: function(event, ui) { alert(ui.item.latitude + ' ' + ui.item.longitude);
+          }
+        });
+      });
+    });
+</script> 
+  </head> 
+  <body> 
+    <label>Адрес для поиска: </label><input id="address" style="width:600px;" type="text"/> 
+    
+  </body> 
+</html>

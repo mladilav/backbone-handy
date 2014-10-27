@@ -1,0 +1,149 @@
+<script id="registration-template" type="text/template">
+    <form id="registerForm" enctype="multipart/form-data"><div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" style="position: fixed; height: auto; width: 761px;   left: 50%; margin-left:-380px; display: block;" tabindex="-1" role="dialog" aria-describedby="dialog" aria-labelledby="ui-id-1"><div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle"><span id="ui-id-1" class="ui-dialog-title">&nbsp;</span><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="Close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">Close</span></button></div><div rel="reg-dialog" class="register ui-dialog-content ui-widget-content" id="dialog" style="width: auto; min-height: 1041px; max-height: none; height: auto;">
+        <div id="regHeader">
+            <div class="logoLeft"></div>
+            <div class="hoverText">
+                Come Back and Apply Anytime
+            </div>
+        </div>
+        <div id="profileheader">
+            <span id="pTitle">So you want to be a HandyBoy?</span>
+            <span id="pText">Apply now in just a few steps</span>
+        </div>
+        <div class="step">
+            <div class="left">
+                <span class="stepHead first">
+                    STEP 1
+                </span>
+                <span class="altText">
+                    Upload photo of yourself
+                </span>
+            </div>
+            <div class="center">
+                <img id="avatar" src="/img/register/avatar.png">
+                <div class="upload">
+                    <input type="file" data-url="server/php/" name="files" id="fileupload">
+                </div>
+            </div>
+            <div class="right">
+                <ul>
+                    <li id="imgMessages"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="step">
+            <div class="left">
+                <span class="stepHead">
+                    STEP 2
+                </span>
+                <span class="altText">
+                    Pick out a job!
+                </span>
+            </div>
+            <div id="jobList" class="center">
+
+            </div>
+            <div class="right">
+                <div class="myPopUp Lage distance">
+                    <div class="leftSide"></div>
+                    <div class="rightSide">
+                        <span class="pophead">Dont worry!</span>
+                        <span class="popBody">
+                            You can change or add jobs at anytime
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="left">
+                <span class="stepHead">
+                    STEP 3
+                </span>
+                <span class="altText long">
+                    Where in the world a are you?
+                </span>
+            </div>
+            <div class="center">
+                <input type="text" id="zipCode" class="input-text" placeholder="City or Zip" name="zipCode">
+            </div>
+        </div>
+        <div class="step">
+            <div class="left">
+                <span class="stepHead">
+                    STEP 4
+                </span>
+                <span class="altText">
+                    When were you born?
+                </span>
+            </div>
+            <div class="center">
+                <ul class="date-of-birth">
+                    <li class="two"><input type="text" maxlength="2" placeholder="MM" name="month" class="input-text month"></li>
+                    <li class="slash">/</li>
+                    <li class="two"><input type="text" maxlength="2" placeholder="DD" name="day" class="input-text day"></li>
+                    <li class="slash">/</li>
+                    <li class="one"><input type="text" maxlength="4" placeholder="YYYY" name="year" class="input-text year"></li>
+                </ul>
+            </div>
+            <div id="DOB" class="right">
+                <div class="myPopUp Lage abs">
+                    <div class="leftSide"></div>
+                    <div class="rightSide">
+                        <span class="pophead">Are you Crazy?</span>
+                        <span class="popBody">
+                            All HandyBoys must be at least 18 years older
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="step">
+            <div class="left">
+                <span class="stepHead">
+                    STEP 5
+                </span>
+                <span class="altText">
+                    What is your mobile number?
+                </span>
+            </div>
+            <div class="center">
+                <input type="tel" id="phone" class="input-text" placeholder="XXX-XXX-XXXX" rel="reg-phone" name="phone">
+                <a class="small" href="">why do we need this?</a>
+            </div>
+            <div class="right phoneNumber">
+                <div class="myPopUp Lage distance">
+                    <div class="leftSide"></div>
+                    <div class="rightSide">
+                        <span class="pophead">Just a second!</span>
+                        <span class="popBody">
+                            Something isnтАЩt right with your cell number
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="steps">
+            <li>
+                <div class="number">1</div>
+                <a href="" id="sendVerification"><div class="body">Send phone verification</div></a>
+            </li>
+            <li>
+                <div class="number">2</div>
+                <div class="body code">
+                    <p>Enter your code here </p>
+                    <input id="userCode" type="text">
+                    <input type="hidden" value="" name="code" id="code" />
+                </div>
+            </li>
+            <li>
+                <div class="number">3</div>
+                <a href="" id="regSubmit" ><div class="body">Perfect! Submit</div></a>
+            </li>
+        </ul>
+
+    </div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div></div>
+    </form>
+</script>

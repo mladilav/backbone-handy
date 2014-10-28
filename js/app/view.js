@@ -24,7 +24,8 @@ var scrollFlag = 1;
 var IndexView = Backbone.View.extend({
     template: 'page-index',
     events : {
-            'click #loginBtn' : 'loginPopUp'
+            'click #loginBtn' : 'loginPopUp',
+            'mousewheel' : 'animation'
         },
  
     initialize: function() {
@@ -48,15 +49,178 @@ var IndexView = Backbone.View.extend({
         loginWindow.show ();
     },
     
-    test: function () {
-        console.log('11');
+    animation: function (event) {
+        var st = event.deltaY;
+
+        if (st < lastScrollTop) {
+            if (scrollFlag) {
+                if (currentPosition == 0) {
+                    $("body,html").animate({
+                        scrollTop: 630
+                    }, 400);
+
+                    $('.captionLight').delay(300).addClass('captionLightAnimation');
+                    $('.firstImage').delay(300).addClass('imageAnimation');
+
+                    scrollFlag = 0;
+                    currentPosition = 630;
+                    setTimeout(this.second_passed, 500)
+                }
+
+            }
+
+            if (scrollFlag) {
+                if (currentPosition == 630) {
+                    $("body,html").animate({
+                        scrollTop: 1400
+                    }, 400);
+
+                    $('.textAnimationOne').delay(300).addClass('textAnimations-1');
+                    $('.secondImage').delay(300).addClass('secondImageAnimation');
+                    scrollFlag = 0;
+                    currentPosition = 1400;
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+
+            if (scrollFlag) {
+                if (currentPosition == 1400) {
+                    $("body,html").animate({
+                        scrollTop: 2000
+                    }, 400);
+                    $('.thirdImage').delay(300).addClass('thirdImageAnimations');
+                    $('.blockAnimate-1').delay(350).addClass('blockAnimations');
+                    $('.blockAnimate-2').delay(400).addClass('blockAnimations');
+                    $('.blockAnimate-3').delay(450).addClass('blockAnimations');
+                    scrollFlag = 0;
+                    currentPosition = 2000;
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+
+            if (scrollFlag) {
+                if (currentPosition == 2000) {
+                    $("body,html").animate({
+                        scrollTop: 2600
+                    }, 400);
+                    $('.textAnimationTwo').delay(300).addClass('textAnimationTwo-1');
+                    $('.screen-six').delay(350).addClass('screen-sixAnimation');
+                    scrollFlag = 0;
+                    currentPosition = 2600;
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+
+            if (scrollFlag) {
+                if (currentPosition == 2600) {
+                    $("body,html").animate({
+                        scrollTop: 3350
+                    }, 400);
+                    $('.sixImage').delay(300).addClass('sixImageAnimation');
+                    $('.partAnimation').delay(300).addClass('partAnimations');
+                    scrollFlag = 0;
+                    currentPosition = 3350;
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+
+            if (scrollFlag) {
+                if (currentPosition == 3350) {
+                    $("body,html").animate({
+                        scrollTop: 3500
+                    }, 400);
+
+                    scrollFlag = 0;
+                    currentPosition = 3500;
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+
+        } else {
+            if (scrollFlag) {
+                if (currentPosition == 630) {
+                    $("body,html").animate({
+                        scrollTop: 0
+                    }, 400);
+                    scrollFlag = 0;
+                    currentPosition = 0;
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+            if (scrollFlag) {
+                if (currentPosition == 1400) {
+                    $("body,html").animate({
+                        scrollTop: 630
+                    }, 400);
+                    scrollFlag = 0;
+                    currentPosition = 630;
+                    st = $("body,html").scrollTop();
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+
+            if (scrollFlag) {
+                if (currentPosition == 2000) {
+                    $("body,html").animate({
+                        scrollTop: 1400
+                    }, 400);
+                    scrollFlag = 0;
+                    currentPosition = 1400;
+                    st = $("body,html").scrollTop();
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+
+            if (scrollFlag) {
+                if (currentPosition == 2600) {
+                    $("body,html").animate({
+                        scrollTop: 2000
+                    }, 400);
+                    scrollFlag = 0;
+                    currentPosition = 2000;
+                    st = $("body,html").scrollTop();
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+
+            if (scrollFlag) {
+                if (currentPosition == 3350) {
+                    $("body,html").animate({
+                        scrollTop: 2600
+                    }, 400);
+                    scrollFlag = 0;
+                    currentPosition = 2600;
+                    st = $("body,html").scrollTop();
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+
+            if (scrollFlag) {
+                if (currentPosition == 3500) {
+                    $("body,html").animate({
+                        scrollTop: 3350
+                    }, 400);
+                    scrollFlag = 0;
+                    currentPosition = 3350;
+                    st = $("body,html").scrollTop();
+                    setTimeout(this.second_passed, 500)
+                }
+            }
+        }
+    },
+    second_passed: function(){
+        scrollFlag = 1;
     }
+
 });
 
 var BioView = Backbone.View.extend({ 
     template: 'page-bio',
     events : {
-            'click .work-schedule-next' : 'workScheduleNext'
+            'click .work-schedule-next' : 'workScheduleNext',
+            'click .job-details-next' : 'jobDetailsNext',
+            'click .work-schedule-back' : 'workScheduleBack',
+            'click .bio-back' : 'bioBack'
             //'click .login' : 'test'
         },
  
@@ -68,10 +232,20 @@ var BioView = Backbone.View.extend({
         var that = this;
         TemplateManager.get(this.template, function(template){
             var html = $(template).tmpl();
-            that.$el.html(html);   
+            that.$el.html(html);
+            $(".slider").slider({
+                range: "min",
+                min: 1,
+                max: 500,
+                value: 37,
+                slide: function( event, ui ) {
+                    $( "#amount" ).val( "$" + ui.value );
+                }
+            });
             $(that.$el).find(".select-bio").selectmenu({ width: 650, change: function( event, ui ) {
                 localStorage.setItem($(this).attr('rel'), $(this).val());
-            } 
+            }
+
         });
         });
         
@@ -82,13 +256,72 @@ var BioView = Backbone.View.extend({
         });*/
         //$( ".select-2" ).selectmenu({ width: 225 });
         //return this;
-    },    
+    },
+    hideAccordion: function(){
+        $('.inner-body').animate({height: "hide"}, 500);
+        $('.inner-body').removeClass("open");
+        $('.accordion-title').removeClass('active');
+        $('.accordion-title').children('b').remove();
+        $('.accordion-title').children('span').before("<b>+</b>");
+    },
+
+    displayJobDetails:function(){
+
+        this.hideAccordion()
+        $('#job-details').children('b').remove();
+        $('#job-details').next('.inner-body').animate({height: "toggle"}, 1000);
+        $('#job-details').next('.inner-body').addClass("open");
+        $('#job-details').children('span').before("<b>-</b>");
+        $('#job-details').addClass('active');
+    },
+    displayWorkSchedule: function(){
+
+        this.hideAccordion()
+        $('#work-schedule').children('b').remove();
+        $('#work-schedule').next('.inner-body').animate({height: "toggle"}, 1000);
+        $('#work-schedule').next('.inner-body').addClass("open");
+        $('#work-schedule').children('span').before("<b>-</b>");
+        $('#work-schedule').addClass('active');
+    },
+    displayBio: function(){
+
+        this.hideAccordion()
+        $('#edit-bio').children('b').remove();
+        $('#edit-bio').next('.inner-body').animate({height: "toggle"}, 1000);
+        $('#edit-bio').next('.inner-body').addClass("open");
+        $('#edit-bio').children('span').before("<b>-</b>");
+        $('#edit-bio').addClass('active');
+    },
+
     workScheduleNext: function () {
-        /*$('.work-schedule-next').removeClass('work-schedule-next');
         $('.work-schedule-next').addClass('job-details-next');
-        $('.work-schedule-next').html('Job Details<i class="icon-arrow-next"></i>');
+        $('.job-details-next').removeClass('work-schedule-next');
+        $('.job-details-next').html('Job Details<i class="icon-arrow-next"></i>');
         $('.edit-back').addClass('bio-back');
-        displayWorkSchedule();*/
+        this.displayWorkSchedule();
+    },
+    jobDetailsNext: function(){
+        $('.job-details-next').addClass('finish');
+        $('.finish').removeClass('job-details-next');
+        $('.edit-back').removeClass('bio-back');
+        $('.edit-back').addClass('work-schedule-back');
+        $('.finish').html('Finish<i class="icon-arrow-next"></i>');
+        this.displayJobDetails();
+    },
+    workScheduleBack:function(){
+        $('.work-schedule-back').addClass('bio-back');
+        $('.bio-back').removeClass('work-schedule-back');
+        $('.finish').addClass('job-details-next');
+        $('.job-details-next').removeClass('finish');
+        $('.job-details-next').html('Job Details<i class="icon-arrow-next"></i>');
+        this.displayWorkSchedule();
+    },
+    bioBack:function(){
+        $('.job-details-next').addClass('work-schedule-next');
+        $('.edit-back').removeClass('bio-back');
+        $('.work-schedule-next').removeClass('job-details-next');
+        $('.work-schedule-next').html('Work Schedule<i class="icon-arrow-next"></i>');
+        this.displayBio();
     }
 });
 

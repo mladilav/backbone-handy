@@ -2342,15 +2342,16 @@ h2.captionLight {
     width: 660px;
 }
 
-.calendar-week {
+.calendar-week,.calendar-month,.calendar-day {
     display: inline-block;
+    text-transform: uppercase;
 }
 
-.calendar-week li {
+.calendar-week li,.calendar-month li,.calendar-day li  {
     float: left;
 }
 
-.calendar-week li a {
+.calendar-week li a,.calendar-day li a,.calendar-month li a  {
     background: none repeat scroll 0 0 #212530;
     color: #ffffff;
     display: inline-block;
@@ -2359,12 +2360,17 @@ h2.captionLight {
     text-decoration: none;
 
 }
+.calendar-day li a{
+   padding: 5px 35px;
+}
 
-.calendar-week li.active a {
+.calendar-week li.active a,.calendar-day li.active a,.calendar-month li.active a{
     background: none repeat scroll 0 0 #e72d3f;
 }
 
-.calendar-week li.active a:before {
+
+
+.calendar-week li.active a:before,.calendar-day li.active a:before {
     background: url("../img/bio_schedule_job/red_arrow_schedule.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
     content: " ";
     height: 10px;
@@ -2372,6 +2378,10 @@ h2.captionLight {
     margin-top: 25px;
     position: absolute;
     width: 84px;
+}
+.calendar-day li.active a:before {
+    background-position: -15px 0px;
+    width: 66px;
 }
 
 .calendar-days {
@@ -2402,6 +2412,24 @@ h2.captionLight {
 .calendar-days-item.active {
     background: none repeat scroll 0 0 #212530;
     color: #ffffff;
+}
+
+.calendar-day li.calendar-prev a{
+    padding: 5px 20px;
+}
+.calendar-day li.calendar-next a{
+    padding: 5px 20px;
+}
+
+.calendar-month li.calendar-prev a{
+    padding: 5px 20px;
+    text-align: left;
+    width: 96px;
+}
+.calendar-month li.calendar-next a{
+    padding: 5px 20px;
+    text-align: right;
+    width: 96px;
 }
 
 .category-jobs {
@@ -2551,6 +2579,7 @@ h2.captionLight {
 .slider .ui-slider-handle {
     background: #212530;
     border: 0;
+    outline: none;
 }
 
 .job-details-check {

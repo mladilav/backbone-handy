@@ -550,6 +550,7 @@ span.ui-icon {
     /*background: transparent url(http://i.stack.imgur.com/BT5AB.png) left top no-repeat;*/
     height: 37px;
     width: 175px;
+    cursor: pointer;
 }
 
 .upload {
@@ -796,7 +797,7 @@ a.small {
 }
 
 .steps {
-    margin-top: 65px;
+    margin-top: 5px;
     margin-left: 75px;
 }
 
@@ -815,7 +816,8 @@ a.small {
 .steps li {
     list-style-type: none;
     display: block;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
+    height: 52px;
 }
 
 .steps input[type="text"] {
@@ -1889,6 +1891,7 @@ h3.darkLargeTitle.main {
     border-bottom-right-radius: 5px;
     height: 30px;
     width: 112px;
+    cursor: pointer;
 }
 
 .formRegistration input[type="text"]:active, .formRegistration input[type="text"]:focus {

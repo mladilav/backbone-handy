@@ -388,8 +388,9 @@ var RegisterView = Backbone.View.extend({
     'blur .year': 'yearValid',
     'blur #phone': 'phoneValid',
     'click #sendVerification': 'phoneVerification',
-    'click #regSubmit': 'registerUser'
-    
+    'click #regSubmit': 'registerUser',
+    'click #fileupload': 'uploadAvatar'
+
   },
   
   initialize: function () {
@@ -404,38 +405,36 @@ var RegisterView = Backbone.View.extend({
             $(".back").removeClass("hide");
             $(that.$el).find("#jobList").html(that.getJobsList());
             $( ".select" ).selectmenu({ width: 305 });
+
+            var geocoder = new google.maps.Geocoder();
+            $("#zipCode").autocomplete({
+                //Определяем значение для адреса при геокодировании
+                source: function(request, response) {
+                    geocoder.geocode( {'address': request.term}, function(results, status) {
+                        response($.map(results, function(item) {
+                            //alert(item.formatted_address);
+                            return {
+                                label:  item.formatted_address,
+                                value: item.formatted_address,
+                                latitude: item.geometry.location.lat(),
+                                longitude: item.geometry.location.lng()
+                            }
+                        }));
+                    });
+                },
+                //Выполняется при выборе конкретного адреса
+                select: function(event, ui) {
+                    alert(ui.item.latitude + ' ' + ui.item.longitude);
+                    var user = new Person ();
+                    user.set('latitude', ui.item.latitude);
+                    user.set('longitude', ui.item.longitude);
+                    localStorage.setItem('user', JSON.stringify(user));
+                }
+            });
         });
   
 
     $('body').append(this.$el);
-
-
-    var geocoder = new google.maps.Geocoder();
-    $("#zipCode").autocomplete({
-          //Определяем значение для адреса при геокодировании
-          source: function(request, response) {
-            geocoder.geocode( {'address': request.term}, function(results, status) {
-              response($.map(results, function(item) {
-                  //alert(item.formatted_address);
-                return {
-                  label:  item.formatted_address,
-                  value: item.formatted_address,
-                  latitude: item.geometry.location.lat(),
-                  longitude: item.geometry.location.lng()
-                }
-              }));
-            });
-          },
-          //Выполняется при выборе конкретного адреса
-          select: function(event, ui) { 
-              alert(ui.item.latitude + ' ' + ui.item.longitude);
-              var user = new Person (); 
-              user.set('latitude', ui.item.latitude);
-              user.set('longitude', ui.item.longitude);
-              localStorage.setItem('user', JSON.stringify(user));
-          }
-        });
-
     return this;
   },
   
@@ -559,7 +558,38 @@ var RegisterView = Backbone.View.extend({
         location.href="/#bio";
         this.close();
         return false;
-  }
+  },
+    uploadAvatar:function(){
+        console.log(1);
+        $('#fileupload').fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    $('body').append('<img id="proxi" src="/server/php/files/'
+                        + file.name + '" />');
+                    $('#avatar').attr('src','/server/php/files/thumbnail/'
+                        + file.name);
+                    imgData = 0;
+                    $("#proxi").load(function() {
+                        var res = [];
+                        res.height = $(this).height();
+                        res.width = $(this).width();
+                        $("#proxi").remove();
+                        var PopUpLight = new popUpLight();
+                        if (person.imgValid (res) ===  true) {
+                            $('#imgMessages').html(PopUpLight.render().el);
+                        } else {
+                            var p = new PopUpLage;
+                            p.set({'header':'Well this is akward',
+                                'body':'Something went wrong! Could you try again?'});
+                            var pop = new popUpLageView({ model: p });
+                            $('#imgMessages').html(pop.el);
+                        }
+                    });
+                });
+            }
+        });
+    }
 });
 
 var popUpLight = Backbone.View.extend({

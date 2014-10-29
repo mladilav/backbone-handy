@@ -132,13 +132,13 @@ var Service = Backbone.Model.extend ({
                     ).responseText;
         bodyContent = JSON.parse(bodyContent);
         var bufer = '';
-        var str = '<select class="select"><option value="0">Empty</option>';
+        var str = '<select class="select"><option value="0">Click for a dropdown of jobs...</option>';
         for (var i in bodyContent.list) {
             bufer = JSON.parse(bodyContent.list[i]);
             str += '<option value="' 
                     + bufer.id 
                     + '">' 
-                    + bufer.nameJob 
+                    + bufer.name
                     + '</option>';
         }
         str += '</select>'; 

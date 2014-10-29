@@ -387,6 +387,7 @@ var RegisterView = Backbone.View.extend({
     'blur .day': 'dayValid',
     'blur .year': 'yearValid',
     'blur #phone': 'phoneValid',
+    'blur .select': 'jobValid',
     'click #sendVerification': 'phoneVerification',
     'click #regSubmit': 'registerUser',
     'click #fileupload': 'uploadAvatar'
@@ -405,10 +406,10 @@ var RegisterView = Backbone.View.extend({
             $(".back").removeClass("hide");
             $(that.$el).find("#jobList").html(that.getJobsList());
             $( ".select" ).selectmenu({ width: 305 });
+            //$("#phone").mask("999-999-9999",{placeholder:"X"});
 
             var geocoder = new google.maps.Geocoder();
             $("#zipCode").autocomplete({
-                //Определяем значение для адреса при геокодировании
                 source: function(request, response) {
                     geocoder.geocode( {'address': request.term}, function(results, status) {
                         response($.map(results, function(item) {
@@ -422,9 +423,8 @@ var RegisterView = Backbone.View.extend({
                         }));
                     });
                 },
-                //Выполняется при выборе конкретного адреса
                 select: function(event, ui) {
-                    alert(ui.item.latitude + ' ' + ui.item.longitude);
+                    //alert(ui.item.latitude + ' ' + ui.item.longitude);
                     var user = new Person ();
                     user.set('latitude', ui.item.latitude);
                     user.set('longitude', ui.item.longitude);
@@ -515,6 +515,10 @@ var RegisterView = Backbone.View.extend({
             $('#phone').removeClass('error');
         }
   },
+
+  jobValid:function(){
+      var val = $('.select').val();
+  },
   phoneVerification: function () {
       var user = new Person();
       var res = user.sendMessage($('#phone').val());
@@ -544,10 +548,7 @@ var RegisterView = Backbone.View.extend({
         var phone = formData[6].value;
         var fn = formData[0].value;
         var ln = formData[1].value;
-        //console.log();
-        //console.log(user.get('phoneNumber'));
         var storeUser = JSON.parse(localStorage.getItem('user'));
-        //localStorage.setItem('user', JSON.stringify(user));
         storeUser.phoneNumber = phone;
         storeUser.dob = dob;
         storeUser.firstName = fn;
@@ -560,7 +561,7 @@ var RegisterView = Backbone.View.extend({
         return false;
   },
     uploadAvatar:function(){
-        console.log(1);
+        var person = new Person();
         $('#fileupload').fileupload({
             dataType: 'json',
             done: function (e, data) {
@@ -654,11 +655,30 @@ var MainView = Backbone.View.extend({
     //loginWindow.show ();
   },
   regPopUp: function () {
-     var rv = new RegisterView(); 
+     //var rv = new RegisterView();
+
+
+      $('form input').removeClass('requed');
+      $(".errorsRegistration").html('');
+
+      if($('#password').val() != $('#passwordConfirm').val()){
+          $("#password").addClass('requed');
+          $("#passwordConfirm").addClass('requed');
+          $(".errorsRegistration").html("Different password!");
+      }
+
+      var user = new User();
+      var attribs = {
+          firstName: $('#firstName').val(),
+          lastName:  $('#lastName').val(),
+          email: $('#email').val(),
+          password: $('#password').val()
+      };
+      user.set(attribs,{validate: true});
+
   },
    animation: function(event){
        var st = event.deltaY;
-       console.log(currentPosition);
        if (st < lastScrollTop) {
            if (scrollFlag) {
                if (currentPosition == 0) {

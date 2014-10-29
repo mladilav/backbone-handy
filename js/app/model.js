@@ -11,6 +11,60 @@ var PopUpLage = Backbone.Model.extend({
     }
 });
 
+var User = Backbone.Model.extend ({
+    defaults: {
+        id: 'undefined',
+        firstName: 'undefined',
+        lastName: 'undefined',
+        password: 'undefined',
+        email: 'undefined'
+    },
+    validate: function(attribs){
+        if(attribs.firstName == '')
+            {
+                $("#firstName").addClass('requed');
+                return 'First name is empty!';}
+        if(attribs.lastName == '')
+        {
+            $("#lastName").addClass('requed');
+            return 'Last name is empty!';}
+
+        if(attribs.email == '')
+        {
+            $("#email").addClass('requed');
+            return 'Email is empty!';}
+
+        var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+        if(!pattern.test(attribs.email)){
+            return 'Incorrect email address!';
+        }
+
+        if(attribs.password == '')
+        {
+            $("#password").addClass('requed');
+            return 'Password is empty!';}
+
+        if(attribs.password.length < 6)
+        {
+            $("#password").addClass('requed');
+            return 'Password is small!';}
+    },
+
+    initialize: function(attribs){
+        this.on("invalid",function(model,error){
+            $(".errorsRegistration").html(error);
+        });
+
+     /*   var storeUser = JSON.parse(localStorage.getItem('user'));
+        storeUser.email = attribs.email;
+        storeUser.password = attribs.password;
+        storeUser.firstName = attribs.firstName;
+        storeUser.lastName = attribs.lastName;
+        localStorage.removeItem('user');
+        console.log(storeUser);
+        localStorage.setItem('user', JSON.stringify(storeUser));*/
+    }
+});
 var Person = Backbone.Model.extend ({
     defaults: {
         id: 'undefined',
@@ -112,6 +166,9 @@ var Person = Backbone.Model.extend ({
 
             }
         }).responseText;
+    },
+    validate: function(attribs){
+
     }
 });
 
@@ -180,10 +237,9 @@ var Service = Backbone.Model.extend ({
         return true;
     },
     phoneValid: function (val) {
-        var reg = "(\\+[0-9]+[\\- \\.]*)?"        // +<digits><sdd>*
-                + "(\\([0-9]+\\)[\\- \\.]*)?"   // (<digits>)<sdd>*
+        var reg = "(\\+[0-9]+[\\- \\.]*)?"
+                + "(\\([0-9]+\\)[\\- \\.]*)?"
                 + "([0-9][0-9\\- \\.]+[0-9])";
-        //console.log(val.match(reg));
         var arr = val.match(reg);
         
         if(arr == null) {

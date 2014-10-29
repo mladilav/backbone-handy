@@ -93,33 +93,34 @@
         <div class="container formAnimation">
             <h3 class="darkLargeTitle">Apply today</h3>
 
-            <form>
+            <form id="registerFormOne">
 
 
                     <table>
                         <tr>
                             <td><label>First Name:</label></td>
-                            <td><input type="text"></td>
+                            <td><input type="text" name="firstName" id="firstName" required="true"></td>
                         </tr>
                         <tr>
                             <td><label>Last Name:</label></td>
-                            <td><input type="text"></td>
+                            <td><input type="text" name="lastName"  id="lastName" required="true"></td>
                         </tr>
                         <tr>
                             <td><label>Email:</label></td>
-                            <td><input type="text"></td>
+                            <td><input type="text" name="email"  id="email" required="true"></td>
                         </tr>
                         <tr>
                             <td><label>Password:</label></td>
-                            <td><input type="text"></td>
+                            <td><input type="password" name="password"  id="password" required="true"></td>
                         </tr>
                         <tr>
                             <td><label>Confirm:</label></td>
-                            <td><input type="text"></td>
+                            <td><input type="password" name="passwordConfirm"  id="passwordConfirm" required="true"></td>
                         </tr>
 
                     </table>
 
+                <div class="errorsRegistration"></div>
                 <input type="button" value="become a handyboy" id="registration" class="btn-dark">
             </form>
 

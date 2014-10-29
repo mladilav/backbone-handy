@@ -19,7 +19,7 @@ App.Router = Backbone.Router.extend({
     index: function () {
         location.href = '/#main';
         var indexView = new IndexView();
-        var person = new Person();
+
 
     },
     bio: function () {

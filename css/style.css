@@ -1877,7 +1877,7 @@ h3.darkLargeTitle.main {
     margin-bottom: 50px;
 }
 
-.formRegistration input[type="text"] {
+.formRegistration input[type="text"],.formRegistration input[type="password"] {
     background: none repeat scroll 0 0 #f4f5f8;
     border: 3px solid #e5e5e9;
     padding: 5px;
@@ -1894,11 +1894,15 @@ h3.darkLargeTitle.main {
     cursor: pointer;
 }
 
-.formRegistration input[type="text"]:active, .formRegistration input[type="text"]:focus {
+.formRegistration input[type="text"]:active, .formRegistration input[type="text"]:focus,
+.formRegistration input[type="password"]:active, .formRegistration input[type="password"]:focus{
     background: #ffffff;
     border: 2px solid #000000;
+    outline: none;
 }
-
+.requed{
+    border-color: #c30100 !important;;
+}
 .formRegistration label {
     font-family: OpenSans;
     font-size: 18px;

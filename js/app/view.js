@@ -358,8 +358,8 @@ var LoginView = Backbone.View.extend({
   },
   login: function () {
       var user = new Person ();
-      var email = $('#email').val();
-      var pass = $('#pass').val();
+      var email = $('#emails').val();
+      var pass = $('#passwords').val();
       var res = user.login(email, pass);
       if (res == true) {
           //setCookie('auth', 'true');
@@ -657,7 +657,6 @@ var MainView = Backbone.View.extend({
   regPopUp: function () {
      //var rv = new RegisterView();
 
-
       $('form input').removeClass('requed');
       $(".errorsRegistration").html('');
 
@@ -667,14 +666,14 @@ var MainView = Backbone.View.extend({
           $(".errorsRegistration").html("Different password!");
       }
 
-      var user = new User();
+      var users = new User();
       var attribs = {
           firstName: $('#firstName').val(),
           lastName:  $('#lastName').val(),
           email: $('#email').val(),
           password: $('#password').val()
       };
-      user.set(attribs,{validate: true});
+      users.set(attribs,{validate: true});
 
   },
    animation: function(event){

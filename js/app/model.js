@@ -166,9 +166,6 @@ var Person = Backbone.Model.extend ({
 
             }
         }).responseText;
-    },
-    validate: function(attribs){
-
     }
 });
 

@@ -62,7 +62,7 @@ var User = Backbone.Model.extend ({
 var Person = Backbone.Model.extend ({
     defaults: {
         id: 'undefined',
-        firstName: '12123',
+        firstName: 'undefined',
         lastName: 'undefined',
         logo: 'undefined',
         facebookUid: 'undefined',
@@ -146,29 +146,29 @@ var Person = Backbone.Model.extend ({
                     ).responseText;
         return bodyContent;
     },
-    register: function () {
-        var storeUser = JSON.parse(localStorage.getItem('user'));
+    register: function (attribs) {
+
         var res = $.ajax({
             type: "POST",
             url: "/proxi/index.php",
             data: "url=user/registration&firstName="
-                + storeUser.firstName
+                + attribs.firstName
                 + "&lastName="
-                + storeUser.lastName
+                + attribs.lastName
                 + "&logo="
-                + storeUser.logo
+                + attribs.logo
                 + "&password="
-                + storeUser.password
+                + attribs.password
                 + "&email="
-                + storeUser.email
+                + attribs.email
                 + "&phoneNumber="
-                + storeUser.phoneNumber
+                + attribs.phoneNumber
                 + "&dob="
-                + storeUser.dob
+                + attribs.dob
                 + "&latitude="
-                + storeUser.latitude
+                + attribs.latitude
                 + "&longitude="
-                + storeUser.longitude
+                + attribs.longitude
             ,
             async: false,
             success: function(msg){

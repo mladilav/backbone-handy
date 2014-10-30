@@ -331,6 +331,7 @@ var LoginView = Backbone.View.extend({
   events: {
     'click #clLogin': 'login',
     'click .ui-dialog-titlebar-close': 'close',
+    'click .fbBtn':'facebookAuth',
     'click #createAc': 'registerView'
   },
   
@@ -349,7 +350,39 @@ var LoginView = Backbone.View.extend({
   },
   
   show: function () {
+
       $( "#dialog" ).dialog({ minWidth: 450, minHeight: 717 });
+     window.fbAsyncInit = function() {
+          FB.init({appId: '1460655034217478', status: true, cookie: true, xfbml: true});
+          FB.Event.subscribe('auth.authResponseChange', auth_response_change_callback);
+          FB.Event.subscribe('auth.statusChange', auth_status_change_callback);
+          FB.getLoginStatus(function(response) {
+              if (response.status === 'connected') {
+                  console.log('Logged in.');
+              }
+              else {
+                  FB.login();
+              }
+          });
+      };
+      (function() {
+          var e = document.createElement('script');
+          e.type = 'text/javascript';
+          e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+          e.async = true;
+          document.getElementById('fb-roots').appendChild(e);
+      }());
+
+      var auth_response_change_callback = function(response) {
+          console.log("auth_response_change_callback");
+          console.log(response);
+      }
+
+      var auth_status_change_callback = function(response) {
+          console.log("auth_status_change_callback: " + response);
+      }
+
+
   },
   close: function () {
       //$('#dialog').dialog('close');
@@ -373,7 +406,11 @@ var LoginView = Backbone.View.extend({
   registerView: function () {
       var rv = new RegisterView();
       this.close();
-  }
+  },
+  facebookAuth: function(){
+
+    }
+
 });
 
 var RegisterView = Backbone.View.extend({
@@ -425,10 +462,11 @@ var RegisterView = Backbone.View.extend({
                 },
                 select: function(event, ui) {
                     //alert(ui.item.latitude + ' ' + ui.item.longitude);
-                    var user = new Person ();
-                    user.set('latitude', ui.item.latitude);
-                    user.set('longitude', ui.item.longitude);
-                    localStorage.setItem('user', JSON.stringify(user));
+                    var storeUser = JSON.parse(localStorage.getItem('user'));
+                    storeUser.latitude = ui.item.latitude;
+                    storeUser.longitude = ui.item.longitude;
+                    localStorage.setItem('user', JSON.stringify(storeUser));
+                    $("#zipCode").removeClass('empty');
                 },
                 appendTo: '#menu-container'
             });
@@ -459,6 +497,7 @@ var RegisterView = Backbone.View.extend({
       return service.getJobs();
   },
   dateValid: function(){
+     $('.month').addClass('error');
      var month = $('.month').val();
      var day = $('.day').val();
      var year = $('.year').val();
@@ -472,6 +511,7 @@ var RegisterView = Backbone.View.extend({
          }
          if((dateObj.getFullYear() - year) > 20){
              $('.abs').hide();
+             $(".date-of-birth").removeClass('empty');
              return;
          }
 
@@ -479,6 +519,7 @@ var RegisterView = Backbone.View.extend({
              if((dateObj.getMonth() - month) > 0)
                 {
                     $('.abs').hide();
+                    $(".date-of-birth").removeClass('empty');
                     return;
                 }
 
@@ -487,6 +528,7 @@ var RegisterView = Backbone.View.extend({
                  if((dateObj.getDate() - day) >= 0)
                  {
                      $('.abs').hide();
+                     $(".date-of-birth").removeClass('empty');
                      return;
                  }
             }
@@ -539,6 +581,7 @@ var RegisterView = Backbone.View.extend({
   },
   phoneValid: function () {
       var service = new Service();
+
       var val = $('#phone').val();
       if(!service.phoneValid(val)) {
             var p = new PopUpLage;
@@ -551,6 +594,7 @@ var RegisterView = Backbone.View.extend({
         } else {
             $('.phoneNumber').hide();
             $('#phone').removeClass('error');
+            $('#phone').removeClass('empty');
         }
   },
 
@@ -581,11 +625,11 @@ var RegisterView = Backbone.View.extend({
       this.monthValid();
       this.dayValid();
       this.yearValid();
-      var error = $('.error').val();
+      var error = $('.empty').val();
       if (typeof(error) != 'undefined') {
           return false;
       }
-
+        console.log(error);
         var storeUser = JSON.parse(localStorage.getItem('user'));
         var date = $('.year').val() + ',' + $('.month').val() + ',' + $('.day').val();
         date = new Date(date);
@@ -595,9 +639,8 @@ var RegisterView = Backbone.View.extend({
         storeUser.job = $(".ui-selectmenu-text").html();
         localStorage.setItem('user', JSON.stringify(storeUser));
         var user = new Person();
-        user.register();
-
-        /*location.href="/#bio";*/
+        user.register(storeUser);
+        location.href="/#bio";
         this.close();
         return false;
 
@@ -617,8 +660,6 @@ var RegisterView = Backbone.View.extend({
                     var storeUser = JSON.parse(localStorage.getItem('user'));
                     storeUser.logo = '/server/php/files/thumbnail/'
                         + file.name;
-                    localStorage.removeItem('user');
-                    console.log(storeUser);
                     localStorage.setItem('user', JSON.stringify(storeUser));
 
                     imgData = 0;
@@ -703,7 +744,7 @@ var MainView = Backbone.View.extend({
   loginPopUp: function () {
     var loginWindow = new LoginView();
     //$(this.el).append(loginWindow.el);
-    //loginWindow.show ();
+    loginWindow.show ();
   },
   regPopUp: function () {
 
@@ -736,7 +777,6 @@ var MainView = Backbone.View.extend({
           storeUser.password = attribs.password;
           storeUser.firstName = attribs.firstName;
           storeUser.lastName = attribs.lastName;
-          localStorage.removeItem('user');
           localStorage.setItem('user', JSON.stringify(storeUser));
           rv.show();
       }

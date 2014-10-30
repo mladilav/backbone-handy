@@ -11,6 +11,7 @@ var PopUpLage = Backbone.Model.extend({
     }
 });
 
+
 var User = Backbone.Model.extend ({
     defaults: {
         id: 'undefined',
@@ -52,23 +53,16 @@ var User = Backbone.Model.extend ({
 
     initialize: function(attribs){
         this.on("invalid",function(model,error){
+            $(".errorsRegistration").show();
             $(".errorsRegistration").html(error);
         });
-
-     /*   var storeUser = JSON.parse(localStorage.getItem('user'));
-        storeUser.email = attribs.email;
-        storeUser.password = attribs.password;
-        storeUser.firstName = attribs.firstName;
-        storeUser.lastName = attribs.lastName;
-        localStorage.removeItem('user');
-        console.log(storeUser);
-        localStorage.setItem('user', JSON.stringify(storeUser));*/
     }
 });
+
 var Person = Backbone.Model.extend ({
     defaults: {
         id: 'undefined',
-        firstName: 'undefined',
+        firstName: '12123',
         lastName: 'undefined',
         logo: 'undefined',
         facebookUid: 'undefined',
@@ -76,19 +70,19 @@ var Person = Backbone.Model.extend ({
         email: 'undefined',
         phoneNumber: 'undefined',
         dob: 'undefined',
-        status: 'undefined',
         serviceId: 'undefined',
         role: 'undefined',
         latitude: 'undefined',
         longitude: 'undefined'
     },
     login: function (email, password) {
+
         var res = $.ajax({
                         type: "POST",
                         url: "/proxi/index.php",
-                        data: "url=user/auth&email=" 
-                                + email 
-                                + "&password=" 
+                        data: "url=user/auth&email="
+                                + email
+                                + "&password="
                                 + password,
                         async: false,
                         success: function(msg){
@@ -152,15 +146,30 @@ var Person = Backbone.Model.extend ({
                     ).responseText;
         return bodyContent;
     },
-    register: function (object) {
-        console.log(object);
+    register: function () {
+        var storeUser = JSON.parse(localStorage.getItem('user'));
         var res = $.ajax({
             type: "POST",
             url: "/proxi/index.php",
-            data: "url=user/registration&email="
-                + email
+            data: "url=user/registration&firstName="
+                + storeUser.firstName
+                + "&lastName="
+                + storeUser.lastName
+                + "&logo="
+                + storeUser.logo
                 + "&password="
-                + password,
+                + storeUser.password
+                + "&email="
+                + storeUser.email
+                + "&phoneNumber="
+                + storeUser.phoneNumber
+                + "&dob="
+                + storeUser.dob
+                + "&latitude="
+                + storeUser.latitude
+                + "&longitude="
+                + storeUser.longitude
+            ,
             async: false,
             success: function(msg){
 

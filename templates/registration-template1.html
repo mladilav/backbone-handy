@@ -44,7 +44,7 @@
 
             </div>
             <div class="right">
-                <div class="myPopUp Lage distance">
+                <div id="jobValidate" class="myPopUp Lage distance">
                     <div class="leftSide"></div>
                     <div class="rightSide">
                         <span class="pophead">Dont worry!</span>
@@ -66,7 +66,10 @@
             </div>
             <div class="center">
                 <input type="text" id="zipCode" class="input-text" placeholder="City or Zip" name="zipCode">
+                <div id="menu-container" style="position:absolute;width:305px;">
+                    </div>
             </div>
+
         </div>
         <div class="step">
             <div class="left">
@@ -79,11 +82,11 @@
             </div>
             <div class="center">
                 <ul class="date-of-birth">
-                    <li class="two"><input type="text" maxlength="2" placeholder="MM" name="month" class="input-text month"></li>
+                    <li class="two"><input type="text" maxlength="2" min="0" placeholder="MM" name="month" class="input-text month"></li>
                     <li class="slash">/</li>
-                    <li class="two"><input type="text" maxlength="2" placeholder="DD" name="day" class="input-text day"></li>
+                    <li class="two"><input type="text" maxlength="2" min="0" placeholder="DD" name="day" class="input-text day"></li>
                     <li class="slash">/</li>
-                    <li class="one"><input type="text" maxlength="4" placeholder="YYYY" name="year" class="input-text year"></li>
+                    <li class="one"><input type="text" maxlength="4" min="0" placeholder="YYYY" name="year" class="input-text year"></li>
                 </ul>
             </div>
             <div id="DOB" class="right">
@@ -140,7 +143,7 @@
             </li>
             <li>
                 <div class="number">3</div>
-                <a href="" id="regSubmit" ><div class="body">Perfect! Submit</div></a>
+                <a id="regSubmit" ><div class="body">Perfect! Submit</div></a>
             </li>
         </ul>
 

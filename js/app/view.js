@@ -383,11 +383,11 @@ var RegisterView = Backbone.View.extend({
     'click .ui-dialog-titlebar-close': 'close',
     'mouseover .ui-dialog-titlebar-close': 'showText',
     'mouseout .ui-dialog-titlebar-close': 'hideText',
-    'blur .month': 'monthValid',
-    'blur .day': 'dayValid',
-    'blur .year': 'yearValid',
+    'blur .month': 'dateValid',
+    'blur .day': 'dateValid',
+    'blur .year': 'dateValid',
     'blur #phone': 'phoneValid',
-    'blur .select': 'jobValid',
+    'click .ui-menu-item': 'jobValid',
     'click #sendVerification': 'phoneVerification',
     'click #regSubmit': 'registerUser',
     'click #fileupload': 'uploadAvatar'
@@ -429,7 +429,8 @@ var RegisterView = Backbone.View.extend({
                     user.set('latitude', ui.item.latitude);
                     user.set('longitude', ui.item.longitude);
                     localStorage.setItem('user', JSON.stringify(user));
-                }
+                },
+                appendTo: '#menu-container'
             });
         });
   
@@ -456,7 +457,44 @@ var RegisterView = Backbone.View.extend({
   getJobsList: function () {
       var service = new Service ();
       return service.getJobs();
-  }, 
+  },
+  dateValid: function(){
+     var month = $('.month').val();
+     var day = $('.day').val();
+     var year = $('.year').val();
+     $('.abs').show();
+
+     if(month*day*year > 0){
+         var dateObj = new Date();
+
+         if((dateObj.getFullYear() - year) > 100){
+             return;
+         }
+         if((dateObj.getFullYear() - year) > 20){
+             $('.abs').hide();
+             return;
+         }
+
+         if((dateObj.getFullYear() - year) > 19){
+             if((dateObj.getMonth() - month) > 0)
+                {
+                    $('.abs').hide();
+                    return;
+                }
+
+             if((dateObj.getMonth() - month) == 0)
+             {
+                 if((dateObj.getDate() - day) >= 0)
+                 {
+                     $('.abs').hide();
+                     return;
+                 }
+            }
+         }
+
+         return;
+     }
+  },
   monthValid: function () {
       var service = new Service();
       if(!service.monthValid ($('.month').val())) {
@@ -511,13 +549,20 @@ var RegisterView = Backbone.View.extend({
             $('.phoneNumber').html(pop.el);
             $('#phone').addClass('error');
         } else {
-            $('.phoneNumber').html('');
+            $('.phoneNumber').hide();
             $('#phone').removeClass('error');
         }
   },
 
   jobValid:function(){
+      $('#jobValidate').show();
       var val = $('.select').val();
+      console.log(val);
+      if (val!=0){
+          $('#jobValidate').hide();
+          return;
+      }
+
   },
   phoneVerification: function () {
       var user = new Person();
@@ -527,9 +572,9 @@ var RegisterView = Backbone.View.extend({
       return false;
   },
   registerUser: function () {
-      var userCode = $.md5($('#userCode').val());
-      var serverCode = $('#code').val();
-      if (userCode !== serverCode) {
+      var userCode = $('#userCode').val();
+      var serverCode = '1234';
+      if (userCode != serverCode) {
           alert('Code is not correct');
           return false;
       }
@@ -540,25 +585,23 @@ var RegisterView = Backbone.View.extend({
       if (typeof(error) != 'undefined') {
           return false;
       }
-        var formData = $('#registerForm').serializeArray();
-       
-        var date = formData[5].value + ',' + formData[3].value + ',' + formData[4].value;
+
+        var storeUser = JSON.parse(localStorage.getItem('user'));
+        var date = $('.year').val() + ',' + $('.month').val() + ',' + $('.day').val();
         date = new Date(date);
         var dob = date.getTime();
-        var phone = formData[6].value;
-        var fn = formData[0].value;
-        var ln = formData[1].value;
-        var storeUser = JSON.parse(localStorage.getItem('user'));
-        storeUser.phoneNumber = phone;
+        storeUser.phoneNumber = $('#phone').val();
         storeUser.dob = dob;
-        storeUser.firstName = fn;
-        storeUser.lastName = ln;
-        localStorage.removeItem('user');
-        console.log(storeUser);
+        storeUser.job = $(".ui-selectmenu-text").html();
         localStorage.setItem('user', JSON.stringify(storeUser));
-        location.href="/#bio";
+        var user = new Person();
+        user.register();
+
+        /*location.href="/#bio";*/
         this.close();
         return false;
+
+
   },
     uploadAvatar:function(){
         var person = new Person();
@@ -570,6 +613,14 @@ var RegisterView = Backbone.View.extend({
                         + file.name + '" />');
                     $('#avatar').attr('src','/server/php/files/thumbnail/'
                         + file.name);
+
+                    var storeUser = JSON.parse(localStorage.getItem('user'));
+                    storeUser.logo = '/server/php/files/thumbnail/'
+                        + file.name;
+                    localStorage.removeItem('user');
+                    console.log(storeUser);
+                    localStorage.setItem('user', JSON.stringify(storeUser));
+
                     imgData = 0;
                     $("#proxi").load(function() {
                         var res = [];
@@ -655,15 +706,17 @@ var MainView = Backbone.View.extend({
     //loginWindow.show ();
   },
   regPopUp: function () {
-     //var rv = new RegisterView();
 
+      var errorsPassword = true;
       $('form input').removeClass('requed');
-      $(".errorsRegistration").html('');
+      $(".errorsRegistration").hide();
 
       if($('#password').val() != $('#passwordConfirm').val()){
           $("#password").addClass('requed');
           $("#passwordConfirm").addClass('requed');
+          $(".errorsRegistration").show();
           $(".errorsRegistration").html("Different password!");
+          errorsPassword = false;
       }
 
       var users = new User();
@@ -673,9 +726,22 @@ var MainView = Backbone.View.extend({
           email: $('#email').val(),
           password: $('#password').val()
       };
-      users.set(attribs,{validate: true});
 
+      var sender = users.set(attribs,{validate: true});
+
+      if((errorsPassword)&&(sender)){
+          var rv = new RegisterView();
+          var storeUser = JSON.parse(localStorage.getItem('user'));
+          storeUser.email = attribs.email;
+          storeUser.password = attribs.password;
+          storeUser.firstName = attribs.firstName;
+          storeUser.lastName = attribs.lastName;
+          localStorage.removeItem('user');
+          localStorage.setItem('user', JSON.stringify(storeUser));
+          rv.show();
+      }
   },
+
    animation: function(event){
        var st = event.deltaY;
        if (st < lastScrollTop) {

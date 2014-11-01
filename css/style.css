@@ -371,7 +371,7 @@ span.ui-icon {
     font-size: 10px;
     color: #1C2933;
     display: block;
-    margin-top: -25px;
+    margin-top: -20px;
     margin-right: 37px;
 }
 
@@ -1620,9 +1620,9 @@ footer ul li a {
     padding: 10px 30px;
     border: 0;
     background: #212530;
-    border-bottom: 5px solid #5b2832;
+    /*border-bottom: 5px solid #5b2832;
     border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 5px;*/
     cursor: pointer;
 }
 
@@ -1647,7 +1647,6 @@ footer ul li a {
     font-size: 55px;
     font-family: OpenSansExtraBold;
     text-transform: uppercase;
-    text-shadow: 0 4px 0px #d4d4d4;
 }
 
 .darkLargeTitle.main {
@@ -1852,10 +1851,10 @@ h3.darkLargeTitle.main {
     padding: 10px 30px;
     border: 0;
     background: #e72d3f;
-    border-bottom: 5px solid #5d5f66;
+    /*border-bottom: 5px solid #5d5f66;*/
     text-decoration: none;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    /*border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;*/
     cursor: pointer;
     display: inline-block;
 }
@@ -2014,13 +2013,7 @@ h2.captionLight {
 }
 
 .textAnimationOne {
-    opacity: 0;
     margin-top: -2000px;
-    -moz-transform: rotate(40deg); /* Для Firefox */
-    -ms-transform: rotate(40deg); /* Для IE */
-    -webkit-transform: rotate(40deg); /* Для Safari, Chrome, iOS */
-    -o-transform: rotate(40deg); /* Для Opera */
-    transform: rotate(40deg);
     -webkit-transition: .8s ease-out;
     -o-transition: .8s ease-out;
     -moz-transition: .8s ease-out;
@@ -2028,14 +2021,33 @@ h2.captionLight {
 }
 
 .textAnimations-1 {
-    opacity: 1;
     margin-top: 0px;
-    -moz-transform: rotate(0deg); /* Для Firefox */
-    -ms-transform: rotate(0deg); /* Для IE */
-    -webkit-transform: rotate(0deg); /* Для Safari, Chrome, iOS */
-    -o-transform: rotate(0deg); /* Для Opera */
     transform: rotate(0deg);
 }
+.play-button{
+    -moz-transform: rotate(360deg) scale(0.1);
+    -ms-transform: rotate(360deg) scale(0.1);
+    -webkit-transform: rotate(360deg) scale(0.1);
+    -o-transform: rotate(360deg) scale(0.1);
+    transform: rotate(360deg) scale(0.1);
+    -webkit-transition: .8s ease-out;
+    -o-transition: .8s ease-out;
+    -moz-transition: .8s ease-out;
+    transition: .8s ease-out;
+}
+
+.play-button-1{
+    -moz-transform: rotate(0deg) scale(1);
+    -ms-transform: rotate(0deg) scale(1);
+    -webkit-transform: rotate(0deg) scale(1);
+    -o-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    -webkit-transition: .8s ease-out;
+    -o-transition: .8s ease-out;
+    -moz-transition: .8s ease-out;
+    transition: .8s ease-out;
+}
+
 
 .screen-three .image {
     opacity: 0;
@@ -2078,7 +2090,7 @@ h2.captionLight {
 }
 
 .textAnimationTwo {
-    opacity: 0;
+
     margin-left: -2000px;
     -webkit-transition: .4s ease-out;
     -o-transition: .4s ease-out;
@@ -2087,7 +2099,6 @@ h2.captionLight {
 }
 
 .textAnimationTwo-1 {
-    opacity: 1;
     margin-left: 0px;
 }
 

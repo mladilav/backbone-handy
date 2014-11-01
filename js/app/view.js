@@ -352,35 +352,7 @@ var LoginView = Backbone.View.extend({
   show: function () {
 
       $( "#dialog" ).dialog({ minWidth: 450, minHeight: 717 });
-     window.fbAsyncInit = function() {
-          FB.init({appId: '1460655034217478', status: true, cookie: true, xfbml: true});
-          FB.Event.subscribe('auth.authResponseChange', auth_response_change_callback);
-          FB.Event.subscribe('auth.statusChange', auth_status_change_callback);
-          FB.getLoginStatus(function(response) {
-              if (response.status === 'connected') {
-                  console.log('Logged in.');
-              }
-              else {
-                  FB.login();
-              }
-          });
-      };
-      (function() {
-          var e = document.createElement('script');
-          e.type = 'text/javascript';
-          e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-          e.async = true;
-          document.getElementById('fb-roots').appendChild(e);
-      }());
 
-      var auth_response_change_callback = function(response) {
-          console.log("auth_response_change_callback");
-          console.log(response);
-      }
-
-      var auth_status_change_callback = function(response) {
-          console.log("auth_status_change_callback: " + response);
-      }
 
 
   },
@@ -409,7 +381,9 @@ var LoginView = Backbone.View.extend({
   },
   facebookAuth: function(){
 
-    }
+
+
+  }
 
 });
 
@@ -721,7 +695,7 @@ var MainView = Backbone.View.extend({
     events : {
             'click .signIn' : 'loginPopUp',
             'click #registration' : 'regPopUp',
-            'click .become-handyboy-button' : 'regPopUp',
+            'click .become-handyboy-button' : 'scrollDown',
             'mousewheel':'animation'
         },
   initialize: function () {
@@ -734,6 +708,7 @@ var MainView = Backbone.View.extend({
             var html = $(template).tmpl();
             that.$el.html(html);
             $('body').html(that.$el);
+
         });
         return this;
   },
@@ -782,6 +757,21 @@ var MainView = Backbone.View.extend({
       }
   },
 
+    scrollDown: function(){
+        $('.textAnimationOne').delay(300).addClass('textAnimations-1');
+        $('.what-is-handyboy').delay(300).addClass('secondImageAnimation');
+        $('.textAnimationTwo').delay(300).addClass('textAnimationTwo-1');
+        $('.textTwo').delay(400).addClass('textTwo-1');
+        $('.why-join').delay(400).addClass('why-join-1');
+        $("body,html").animate({
+            scrollTop: 2250
+        }, 400);
+        $('.formAnimation').delay(300).addClass('formAnimation-1');
+        scrollFlag = 0;
+        currentPosition = 2250;
+        setTimeout(this.second_passed, 500)
+    },
+
    animation: function(event){
        var st = event.deltaY;
        if (st < lastScrollTop) {
@@ -793,9 +783,10 @@ var MainView = Backbone.View.extend({
 
                    $('.textAnimationOne').delay(300).addClass('textAnimations-1');
                    $('.what-is-handyboy').delay(300).addClass('secondImageAnimation');
+                   $('.play-button').delay(300).addClass('play-button-1');
                    scrollFlag = 0;
                    currentPosition = 800;
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
 
            }
@@ -811,9 +802,10 @@ var MainView = Backbone.View.extend({
                    $('.why-join').delay(400).addClass('why-join-1');
 
 
+
                    scrollFlag = 0;
                    currentPosition = 1600;
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
 
@@ -825,7 +817,7 @@ var MainView = Backbone.View.extend({
                    $('.formAnimation').delay(300).addClass('formAnimation-1');
                    scrollFlag = 0;
                    currentPosition = 2250;
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
 
@@ -837,7 +829,7 @@ var MainView = Backbone.View.extend({
                    $('.frequently').delay(300).addClass('frequently-1');
                    scrollFlag = 0;
                    currentPosition = 3000;
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
 
@@ -849,7 +841,7 @@ var MainView = Backbone.View.extend({
 
                    scrollFlag = 0;
                    currentPosition = 3350;
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
 
@@ -863,7 +855,7 @@ var MainView = Backbone.View.extend({
                    }, 400);
                    scrollFlag = 0;
                    currentPosition = 0;
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
            if (scrollFlag) {
@@ -874,7 +866,7 @@ var MainView = Backbone.View.extend({
                    scrollFlag = 0;
                    currentPosition = 800;
                    st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
 
@@ -886,7 +878,7 @@ var MainView = Backbone.View.extend({
                    scrollFlag = 0;
                    currentPosition = 1600;
                    st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
 
@@ -898,7 +890,7 @@ var MainView = Backbone.View.extend({
                    scrollFlag = 0;
                    currentPosition = 2250;
                    st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
 
@@ -910,7 +902,7 @@ var MainView = Backbone.View.extend({
                    scrollFlag = 0;
                    currentPosition = 3000;
                    st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
 
@@ -922,7 +914,7 @@ var MainView = Backbone.View.extend({
                    scrollFlag = 0;
                    currentPosition = 3350;
                    st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 500)
+                   setTimeout(this.second_passed, 100)
                }
            }
        }

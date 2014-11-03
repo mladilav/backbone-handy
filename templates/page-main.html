@@ -1,6 +1,8 @@
 <script id="page-main" type="text/template">
+
     <body onload="init()" style="overflow: hidden;">
-<div class="wrapper">
+    <div id="fb-root"></div>
+    <div class="wrapper">
     <div class="video">
         <video id="video_background" class="video-background-top" preload="auto" autoplay="true" loop="loop" poster="img/main/BG.png">
             <source src="floatinghandyboybrightdarkredbig2.mp4" type='video/mp4'>
@@ -118,7 +120,7 @@
                         </tr>
 
                     </table>
-
+                    <input type="hidden" id="facebookId">
                 <div class="errorsRegistration"></div>
                 <input type="button" value="become a handyboy" id="registration" class="btn-dark">
             </form>
@@ -167,5 +169,5 @@
     </div>
     <div class="back hide"></div>
     <div id="popUps"></div>
-    <div id="fb-root"></div>
+
 </script>

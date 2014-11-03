@@ -376,14 +376,35 @@ var LoginView = Backbone.View.extend({
       }
   },
   registerView: function () {
-      var rv = new RegisterView();
+
       this.close();
+      this.scrollDown();
+
   },
   facebookAuth: function(){
+      checkLoginState();
+      this.close();
+      this.scrollDown();
 
+  },
+    scrollDown: function(){
+        $('.textAnimationOne').delay(300).addClass('textAnimations-1');
+        $('.what-is-handyboy').delay(300).addClass('secondImageAnimation');
+        $('.textAnimationTwo').delay(300).addClass('textAnimationTwo-1');
+        $('.textTwo').delay(400).addClass('textTwo-1');
+        $('.why-join').delay(400).addClass('why-join-1');
+        $("body,html").animate({
+            scrollTop: 2250
+        }, 400);
+        $('.formAnimation').delay(300).addClass('formAnimation-1');
+        scrollFlag = 0;
+        currentPosition = 2250;
+        setTimeout(this.second_passed, 100)
+    },
+    second_passed: function(){
+        scrollFlag = 1;
+    }
 
-
-  }
 
 });
 
@@ -575,7 +596,6 @@ var RegisterView = Backbone.View.extend({
   jobValid:function(){
       $('#jobValidate').show();
       var val = $('.select').val();
-      console.log(val);
       if (val!=0){
           $('#jobValidate').hide();
           return;
@@ -603,7 +623,7 @@ var RegisterView = Backbone.View.extend({
       if (typeof(error) != 'undefined') {
           return false;
       }
-        console.log(error);
+
         var storeUser = JSON.parse(localStorage.getItem('user'));
         var date = $('.year').val() + ',' + $('.month').val() + ',' + $('.day').val();
         date = new Date(date);
@@ -613,12 +633,12 @@ var RegisterView = Backbone.View.extend({
         storeUser.job = $(".ui-selectmenu-text").html();
         localStorage.setItem('user', JSON.stringify(storeUser));
         var user = new Person();
-        user.register(storeUser);
-        location.href="/#bio";
-        this.close();
+        var res = user.register(storeUser);
+        console.log(res);
+        if(res != false)
+        {location.href="/#bio";
+        this.close();}
         return false;
-
-
   },
     uploadAvatar:function(){
         var person = new Person();
@@ -752,6 +772,7 @@ var MainView = Backbone.View.extend({
           storeUser.password = attribs.password;
           storeUser.firstName = attribs.firstName;
           storeUser.lastName = attribs.lastName;
+          storeUser.facebookUid = $('#facebookId').val();
           localStorage.setItem('user', JSON.stringify(storeUser));
           rv.show();
       }

@@ -147,7 +147,6 @@ var Person = Backbone.Model.extend ({
         return bodyContent;
     },
     register: function (attribs) {
-
         var res = $.ajax({
             type: "POST",
             url: "/proxi/index.php",
@@ -169,12 +168,24 @@ var Person = Backbone.Model.extend ({
                 + attribs.latitude
                 + "&longitude="
                 + attribs.longitude
+                + "&facebookUid="
+                + attribs.facebookUid
             ,
             async: false,
             success: function(msg){
 
             }
         }).responseText;
+
+
+        res = JSON.parse(res);
+        if (res.status === 'HTTP/1.1 200 OK') {
+            this.setFilds(res.object);
+            localStorage.setItem('user', JSON.stringify(this));
+            return true;
+        } else {
+            alert(res.parameters);
+        }
     }
 });
 

@@ -49,8 +49,16 @@
                                     <p>
                                         <select class="select-bio">
                                             <option>What ethnicity for you identify...</option>
-                                            <option>2</option>
-                                            <option>3</option>
+                                            <option>White</option>
+                                            <option>Asian</option>
+                                            <option>Latino</option>
+                                            <option>African</option>
+                                            <option>American</option>
+                                            <option>Middle Eastern</option>
+                                            <option>Native American</option>
+                                            <option>Mixed</option>
+                                            <option>South Asian</option>
+                                            <option>Other</option>
                                         </select>
                                     </p>
 
@@ -58,8 +66,10 @@
                                     <p>
                                         <select class="select-bio">
                                             <option>What color's your mop?</option>
-                                            <option>2</option>
-                                            <option>3</option>
+                                            <option>Black</option>
+                                            <option>Blonde</option>
+                                            <option>Red</option>
+                                            <option>Brown</option>
                                         </select>
                                     </p>
 
@@ -67,8 +77,10 @@
                                     <p>
                                         <select class="select-bio">
                                             <option>Lapis Lazuli or Viridian?</option>
-                                            <option>2</option>
-                                            <option>3</option>
+                                            <option>Blue</option>
+                                            <option>Green</option>
+                                            <option>Gray</option>
+                                            <option>Brown</option>
                                         </select>
                                     </p>
 
@@ -76,13 +88,32 @@
                                     <p>
                                         <select class="select-bio">
                                             <option>How are you built/sculped?</option>
-                                            <option>2</option>
-                                            <option>3</option>
+                                            <option>Toned</option>
+                                            <option>Slim</option>
+                                            <option>Muscular</option>
+                                            <option>Beefy</option>
+                                            <option>Average</option>
+                                            <option>Hairy</option>
+                                            <option>Shaved</option>
+                                            <option>Smooth</option>
+                                            <option>Stocky</option>
+                                            <option>Athletic</option>
+                                            <option>Large</option>
+                                        </select>
+                                    </p>
+                                    <label class="small-label">Sexual Orientation</label>
+                                    <p>
+                                        <select class="select-bio">
+                                            <option>How are you built/sculped?</option>
+                                            <option>Gay</option>
+                                            <option>Bi</option>
+                                            <option>Straight</option>
+                                            <option>Other</option>
+                                            <option>Unspecified</option>
                                         </select>
                                     </p>
                                     <label class="small-label">Search profile</label>
-                                    <textarea  class="textarea" placeholder="Tell about you - have fun and be yourself. This is the first
-                                               thing a potential client will read about you!">
+                                    <textarea  class="textarea searchProfile" placeholder="">
 
                                     </textarea>
                                 </div>
@@ -251,7 +282,7 @@
                                 <div class="inner-body">
                                     <div class="job-details">
                                         <div class="category-jobs">
-                                            <p class="category-jobs-item category-jobs-item-1 active"></p>
+                                            <p class="category-jobs-item category-jobs-item-1"></p>
                                             <p class="category-jobs-item category-jobs-item-2"></p>
                                             <p class="category-jobs-item category-jobs-item-3"></p>
                                             <p class="category-jobs-item category-jobs-item-4"></p>
@@ -284,7 +315,7 @@
                                             </p>
                                             <p class="job-details-info-price">
                                                 <span class="job-details-info-price-small">Total</span><br>
-                                                <span class="job-details-info-price-big">50$</span>
+                                                <span class="job-details-info-price-big" id="price">50$</span>
                                             </p>
                                         </div>
 
@@ -322,6 +353,7 @@
                                                 </label>
 
                                             </div>
+
                                             <div class="work-place-item">
                                                 <input id="four" type="radio" name="two" hidden />
                                                 <label for="four" >
@@ -331,7 +363,7 @@
 
                                             </div>
                                         </div>
-
+                                        <div style="display: none;">
                                         <p class="title-big">+ Add new location</p>
                                         <label class="small-label"><b>What should we call this place?</b></label>
                                         <p>
@@ -433,6 +465,7 @@
                                             </p>
 
                                         </div>
+                                        </div>
                                     </div>
                                 </div>
                                 </div>
@@ -464,11 +497,12 @@
                             <p class="user-profile-complete-next-step">
                                 Next steps
                             </p>
+                            <div class="stepsSlide"></div>
                             <ul class="user-profile-complete-steps">
                                 <li>Add photo +5%</li>
-                                <li>Bio +15%</li>
-                                <li>Search profile +5%</li>
-                                <li>Schedule +20%</li>
+                                <li class="bioStatus">Bio +15%</li>
+                                <li class="searchStatus">Search profile +5%</li>
+                                <li class="scheduleStatus">Schedule +20%</li>
                                 <li>Job Details +15%</li>
                             </ul>
                         </div>

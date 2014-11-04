@@ -92,4 +92,33 @@ $(document).on('click','.calendar-days-item',function(){
         $(this).addClass('active');
     }
 })
+$(document).on('click','.category-jobs-item',function(){
+    if($(this).hasClass('active')){
+        $(this).removeClass('active');
+    } else {
+        $(this).addClass('active');
+    }
+});
+$(window).scroll(function(){
+        var scrollTop = $(window).scrollTop();
+        if(scrollTop > 200){
+            $('.textAnimationOne').addClass('textAnimations-1');
+            $('.what-is-handyboy').addClass('secondImageAnimation');
+            $('.play-button').addClass('play-button-1');
+        }
 
+        if(scrollTop > 1000){
+            $('.textAnimationTwo').delay(300).addClass('textAnimationTwo-1');
+            $('.textTwo').delay(400).addClass('textTwo-1');
+            $('.why-join').delay(400).addClass('why-join-1');
+        }
+        if(scrollTop > 1500){
+            $('.formAnimation').delay(300).addClass('formAnimation-1');
+        }
+        if(scrollTop > 2000){
+            $('.frequently').delay(300).addClass('frequently-1');
+        }
+        console.log($(window).scrollTop());
+    }
+
+);

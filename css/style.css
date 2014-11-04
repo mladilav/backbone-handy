@@ -38,7 +38,6 @@ body, html {
     background: #fff;
     font-family: OpenSans;
     color: #212530;
-    overflow: hidden;
 }
 
 .wrapper {
@@ -1749,6 +1748,14 @@ h3.darkLargeTitle.main {
     background: url("../img/main/phone_ico.png") no-repeat center top;
     width: 22px;
     height: 42px;
+    -webkit-transition: .4s ease-out;
+    -o-transition: .4s ease-out;
+    -moz-transition: .4s ease-out;
+    transition: .4s ease-out;
+    cursor: pointer;
+}
+.icon-phone:hover{
+    background-image: url("../img/main/phone_ico_HOVER.png");
 }
 
 .icon-dialog {
@@ -1756,6 +1763,15 @@ h3.darkLargeTitle.main {
     background: url("../img/main/chat_ico.png") no-repeat center top;
     width: 45px;
     height: 38px;
+    -webkit-transition: .8s ease-out;
+    -o-transition: .8s ease-out;
+    -moz-transition: .8s ease-out;
+    transition: .8s ease-out;
+    cursor: pointer;
+}
+
+.icon-dialog:hover{
+    background-image: url("../img/main/chat_ico_HOVER.png");
 }
 
 .icon-cart {
@@ -1763,6 +1779,14 @@ h3.darkLargeTitle.main {
     background: url("../img/main/card_ico.png") no-repeat center top;
     width: 45px;
     height: 29px;
+    -webkit-transition: .8s ease-out;
+    -o-transition: .8s ease-out;
+    -moz-transition: .8s ease-out;
+    transition: .8s ease-out;
+    cursor: pointer;
+}
+.icon-cart:hover{
+    background-image: url("../img/main/card_ico_HOVER.png");
 }
 
 .icon-star {
@@ -1770,6 +1794,15 @@ h3.darkLargeTitle.main {
     background: url("../img/main/star_ico.png") no-repeat center top;
     width: 41px;
     height: 40px;
+    -webkit-transition: .8s ease-out;
+    -o-transition: .8s ease-out;
+    -moz-transition: .8s ease-out;
+    transition: .8s ease-out;
+    cursor: pointer;
+}
+
+.icon-star:hover{
+    background-image: url("../img/main/star_ico_HOVER.png");
 }
 
 .icon-lock {
@@ -1777,6 +1810,15 @@ h3.darkLargeTitle.main {
     background: url("../img/main/icon-lock.png") no-repeat center top;
     width: 28px;
     height: 33px;
+    -webkit-transition: .8s ease-out;
+    -o-transition: .8s ease-out;
+    -moz-transition: .8s ease-out;
+    transition: .8s ease-out;
+    cursor: pointer;
+}
+
+.icon-lock:hover{
+    background-image: url("../img/main/lock_ico_HOVER.png");
 }
 
 .icon-earl {
@@ -1784,6 +1826,14 @@ h3.darkLargeTitle.main {
     background: url("../img/main/radar_ico.png") no-repeat center top;
     width: 35px;
     height: 34px;
+    -webkit-transition: .8s ease-out;
+    -o-transition: .8s ease-out;
+    -moz-transition: .8s ease-out;
+    transition: .8s ease-out;
+    cursor: pointer;
+}
+.icon-earl:hover{
+    background-image: url("../img/main/radar_ico_HOVER.png");
 }
 
 .why-joins {
@@ -2191,7 +2241,7 @@ h2.captionLight {
     -moz-transform: rotate(0deg) scale(1);
     -ms-transform: rotate(0deg) scale(1);
     -webkit-transform: rotate(0deg) scale(1);
-/ -o-transform : rotate(0 deg) scale(1);
+     -o-transform : rotate(0 deg) scale(1);
     transform: rotate(0deg) scale(1);
 }
 
@@ -2475,10 +2525,11 @@ h2.captionLight {
     width: 114px;
     height: 114px;
     margin: 3px 0;
+    cursor: pointer;
 }
 
 .category-jobs-item.active {
-    background: url("../img/bio_schedule_job/sprite-category-active.png");
+    background-image: url("../img/bio_schedule_job/sprite-category-active.png");
 }
 
 .category-jobs-item-1 {
@@ -2814,4 +2865,11 @@ h2.captionLight {
 
 .accordion-title b {
     cursor: default;
+}
+.stepsSlide{
+    background: #e72d3f;
+    height: 5px;
+    width: 60px;
+    margin-left: 5px;
+
 }

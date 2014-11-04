@@ -178,14 +178,6 @@ var Person = Backbone.Model.extend ({
         }).responseText;
 
 
-        res = JSON.parse(res);
-        if (res.status === 'HTTP/1.1 200 OK') {
-            this.setFilds(res.object);
-            localStorage.setItem('user', JSON.stringify(this));
-            return true;
-        } else {
-            alert(res.parameters);
-        }
     }
 });
 
@@ -204,6 +196,7 @@ var Service = Backbone.Model.extend ({
                         }
                      }
                     ).responseText;
+
         bodyContent = JSON.parse(bodyContent);
         var bufer = '';
         var str = '<select class="select"><option value="0">Click for a dropdown of jobs...</option>';

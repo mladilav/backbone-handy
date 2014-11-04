@@ -38,7 +38,6 @@ var IndexView = Backbone.View.extend({
             var html = $(template).tmpl();
             that.$el.html(html);
             $('body').html(that.$el);
-            //animation1 ();
         });
         return this;
     },
@@ -235,11 +234,11 @@ var BioView = Backbone.View.extend({
             that.$el.html(html);
             $(".slider").slider({
                 range: "min",
-                min: 1,
-                max: 500,
-                value: 37,
+                min: 50,
+                max: 70,
+                value: 60,
                 slide: function( event, ui ) {
-                    $( "#amount" ).val( "$" + ui.value );
+                    $( ".job-details-info-price-big" ).html( ui.value + "$");
                 }
             });
             $(that.$el).find(".select-bio").selectmenu({ width: 650, change: function( event, ui ) {
@@ -294,11 +293,28 @@ var BioView = Backbone.View.extend({
     },
 
     workScheduleNext: function () {
+        /*
+        Display next steps
+         */
         $('.work-schedule-next').addClass('job-details-next');
         $('.job-details-next').removeClass('work-schedule-next');
         $('.job-details-next').html('Job Details<i class="icon-arrow-next"></i>');
         $('.edit-back').addClass('bio-back');
         this.displayWorkSchedule();
+        /*
+         end
+         */
+        if($('.searchProfile').val().length != ' '){
+            $('.searchStatus').css('font-family','OpenSansBold');
+            var width = $('.stepsSlide').width();
+            $('.stepsSlide').width(width+10);
+        }
+
+
+            $('.bioStatus').css('font-family','OpenSansBold');
+            var width = $('.stepsSlide').width();
+            $('.stepsSlide').width(width+30);
+
     },
     jobDetailsNext: function(){
         $('.job-details-next').addClass('finish');
@@ -307,6 +323,11 @@ var BioView = Backbone.View.extend({
         $('.edit-back').addClass('work-schedule-back');
         $('.finish').html('Finish<i class="icon-arrow-next"></i>');
         this.displayJobDetails();
+
+            $('.scheduleStatus').css('font-family','OpenSansBold');
+            var width = $('.stepsSlide').width();
+            $('.stepsSlide').width(width+40);
+
     },
     workScheduleBack:function(){
         $('.work-schedule-back').addClass('bio-back');
@@ -473,7 +494,8 @@ var RegisterView = Backbone.View.extend({
   },
   
   show: function () {
-  },
+      $( "#dialog" ).dialog({ minWidth: 760, minHeight: 1050 });
+      },
   close: function () {
       $('.rDialog').remove();
       $(".back").addClass("hide");
@@ -633,12 +655,9 @@ var RegisterView = Backbone.View.extend({
         storeUser.job = $(".ui-selectmenu-text").html();
         localStorage.setItem('user', JSON.stringify(storeUser));
         var user = new Person();
-        var res = user.register(storeUser);
-        console.log(res);
-        if(res != false)
-        {location.href="/#bio";
-        this.close();}
-        return false;
+        user.register(storeUser);
+        location.href="/#bio";
+        this.close();
   },
     uploadAvatar:function(){
         var person = new Person();
@@ -657,6 +676,7 @@ var RegisterView = Backbone.View.extend({
                     localStorage.setItem('user', JSON.stringify(storeUser));
 
                     imgData = 0;
+
                     $("#proxi").load(function() {
                         var res = [];
                         res.height = $(this).height();
@@ -794,152 +814,25 @@ var MainView = Backbone.View.extend({
     },
 
    animation: function(event){
-       var st = event.deltaY;
-       if (st < lastScrollTop) {
-           if (scrollFlag) {
-               if (currentPosition == 0) {
-                   $("body,html").animate({
-                       scrollTop: 800
-                   }, 400);
+      var scrollTop = $(window).scrollTop();
+            if(scrollTop > 200){
+                $('.textAnimationOne').addClass('textAnimations-1');
+                $('.what-is-handyboy').addClass('secondImageAnimation');
+                $('.play-button').addClass('play-button-1');
+            }
 
-                   $('.textAnimationOne').delay(300).addClass('textAnimations-1');
-                   $('.what-is-handyboy').delay(300).addClass('secondImageAnimation');
-                   $('.play-button').delay(300).addClass('play-button-1');
-                   scrollFlag = 0;
-                   currentPosition = 800;
-                   setTimeout(this.second_passed, 100)
-               }
-
-           }
-
-           if (scrollFlag) {
-               if (currentPosition == 800) {
-                   $("body,html").animate({
-                       scrollTop: 1600
-                   }, 400);
-
-                   $('.textAnimationTwo').delay(300).addClass('textAnimationTwo-1');
-                   $('.textTwo').delay(400).addClass('textTwo-1');
-                   $('.why-join').delay(400).addClass('why-join-1');
-
-
-
-                   scrollFlag = 0;
-                   currentPosition = 1600;
-                   setTimeout(this.second_passed, 100)
-               }
-           }
-
-           if (scrollFlag) {
-               if (currentPosition == 1600) {
-                   $("body,html").animate({
-                       scrollTop: 2250
-                   }, 400);
-                   $('.formAnimation').delay(300).addClass('formAnimation-1');
-                   scrollFlag = 0;
-                   currentPosition = 2250;
-                   setTimeout(this.second_passed, 100)
-               }
-           }
-
-           if (scrollFlag) {
-               if (currentPosition == 2250) {
-                   $("body,html").animate({
-                       scrollTop: 3000
-                   }, 400);
-                   $('.frequently').delay(300).addClass('frequently-1');
-                   scrollFlag = 0;
-                   currentPosition = 3000;
-                   setTimeout(this.second_passed, 100)
-               }
-           }
-
-           if (scrollFlag) {
-               if (currentPosition == 3000) {
-                   $("body,html").animate({
-                       scrollTop: 3350
-                   }, 400);
-
-                   scrollFlag = 0;
-                   currentPosition = 3350;
-                   setTimeout(this.second_passed, 100)
-               }
-           }
-
-
-
-       } else {
-           if (scrollFlag) {
-               if (currentPosition == 800) {
-                   $("body,html").animate({
-                       scrollTop: 0
-                   }, 400);
-                   scrollFlag = 0;
-                   currentPosition = 0;
-                   setTimeout(this.second_passed, 100)
-               }
-           }
-           if (scrollFlag) {
-               if (currentPosition == 1600) {
-                   $("body,html").animate({
-                       scrollTop: 800
-                   }, 400);
-                   scrollFlag = 0;
-                   currentPosition = 800;
-                   st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 100)
-               }
-           }
-
-           if (scrollFlag) {
-               if (currentPosition == 2250) {
-                   $("body,html").animate({
-                       scrollTop: 1600
-                   }, 400);
-                   scrollFlag = 0;
-                   currentPosition = 1600;
-                   st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 100)
-               }
-           }
-
-           if (scrollFlag) {
-               if (currentPosition == 3000) {
-                   $("body,html").animate({
-                       scrollTop: 2250
-                   }, 400);
-                   scrollFlag = 0;
-                   currentPosition = 2250;
-                   st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 100)
-               }
-           }
-
-           if (scrollFlag) {
-               if (currentPosition == 3350) {
-                   $("body,html").animate({
-                       scrollTop: 3000
-                   }, 400);
-                   scrollFlag = 0;
-                   currentPosition = 3000;
-                   st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 100)
-               }
-           }
-
-           if (scrollFlag) {
-               if (currentPosition == 3500) {
-                   $("body,html").animate({
-                       scrollTop: 3350
-                   }, 400);
-                   scrollFlag = 0;
-                   currentPosition = 3350;
-                   st = $("body,html").scrollTop();
-                   setTimeout(this.second_passed, 100)
-               }
-           }
+       if(scrollTop > 1000){
+           $('.textAnimationTwo').delay(300).addClass('textAnimationTwo-1');
+           $('.textTwo').delay(400).addClass('textTwo-1');
+           $('.why-join').delay(400).addClass('why-join-1');
        }
-
+       if(scrollTop > 1500){
+           $('.formAnimation').delay(300).addClass('formAnimation-1');
+       }
+       if(scrollTop > 2000){
+           $('.frequently').delay(300).addClass('frequently-1');
+       }
+       console.log($(window).scrollTop());
    },
     second_passed: function(){
         scrollFlag = 1;

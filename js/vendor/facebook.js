@@ -118,7 +118,6 @@ $(window).scroll(function(){
         if(scrollTop > 2000){
             $('.frequently').delay(300).addClass('frequently-1');
         }
-        console.log($(window).scrollTop());
     }
 
 );

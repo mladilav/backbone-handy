@@ -241,9 +241,39 @@ var BioView = Backbone.View.extend({
                     $( ".job-details-info-price-big" ).html( ui.value + "$");
                 }
             });
+            var storeUser = JSON.parse(localStorage.getItem('user'));
+            var user = new Person();
+            storeUser = user.getInfo(storeUser.id);
+            $('#username').html(storeUser.firstName + ' ' + storeUser.lastName);
+            $('.userId').html('#'+storeUser.id);
+            $('.currentAvatars').attr('src',storeUser.logo);
+
+            var res = $.ajax({
+                type: "POST",
+                url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="
+                    + storeUser.latitude
+                    + ","
+                    +storeUser.longitude
+                    +"&sensor=true_or_false",
+                async: false,
+                success: function(msg){
+
+                }
+            }).responseText;
+            res = JSON.parse(res);
+            $('.address').html(res.results[0].formatted_address);
+
+            if(storeUser.serviceId != null){
+
+            }
+            localStorage.setItem('user', JSON.stringify(storeUser));
+
             $(that.$el).find(".select-bio").selectmenu({ width: 650, change: function( event, ui ) {
                 localStorage.setItem($(this).attr('rel'), $(this).val());
             }
+
+
+
 
         });
         });
@@ -510,8 +540,8 @@ var RegisterView = Backbone.View.extend({
       console.log('login'); 
   }, 
   getJobsList: function () {
-      var service = new Service ();
-      return service.getJobs();
+      var job = new Job ();
+      return job.getJobs();
   },
   dateValid: function(){
      $('.month').addClass('error');
@@ -555,8 +585,8 @@ var RegisterView = Backbone.View.extend({
      }
   },
   monthValid: function () {
-      var service = new Service();
-      if(!service.monthValid ($('.month').val())) {
+      var person = new Person();
+      if(!person.monthValid ($('.month').val())) {
             var p = new PopUpLage;
                 p.set({'header':'Error', 
                     'body':'It is not a month inset corret month'});
@@ -569,8 +599,8 @@ var RegisterView = Backbone.View.extend({
         }
   },
   dayValid: function () {
-      var service = new Service();
-      if(!service.dayValid ($('.day').val())) {
+      var person = new Person();
+      if(!person.dayValid ($('.day').val())) {
             var p = new PopUpLage;
                 p.set({'header':'Error', 
                     'body':'It is not a day inset corret day'});
@@ -583,8 +613,8 @@ var RegisterView = Backbone.View.extend({
         }
   },
   yearValid: function () {
-      var service = new Service();
-      if(!service.yearValid ($('.year').val())) {
+      var person = new Person();
+      if(!person.yearValid ($('.year').val())) {
             var p = new PopUpLage;
                 p.set({'header':'Error', 
                     'body':'It is not a year inset corret year'});
@@ -597,10 +627,10 @@ var RegisterView = Backbone.View.extend({
         }
   },
   phoneValid: function () {
-      var service = new Service();
+      var person = new Person();
 
       var val = $('#phone').val();
-      if(!service.phoneValid(val)) {
+      if(!person.phoneValid(val)) {
             var p = new PopUpLage;
                 p.set({'header':'Error', 
                     'body':'It is not a phone inset corret phone'});
@@ -653,11 +683,14 @@ var RegisterView = Backbone.View.extend({
         storeUser.phoneNumber = $('#phone').val();
         storeUser.dob = dob;
         storeUser.job = $(".ui-selectmenu-text").html();
-        localStorage.setItem('user', JSON.stringify(storeUser));
         var user = new Person();
-        user.register(storeUser);
+        var res = user.register(storeUser);
+        console.log(res);
+          if(res){
+              storeUser.id = res;
+              localStorage.setItem('user', JSON.stringify(storeUser));
         location.href="/#bio";
-        this.close();
+        this.close();}
   },
     uploadAvatar:function(){
         var person = new Person();
@@ -832,7 +865,6 @@ var MainView = Backbone.View.extend({
        if(scrollTop > 2000){
            $('.frequently').delay(300).addClass('frequently-1');
        }
-       console.log($(window).scrollTop());
    },
     second_passed: function(){
         scrollFlag = 1;

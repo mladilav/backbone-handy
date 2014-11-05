@@ -173,96 +173,151 @@ var Person = Backbone.Model.extend ({
             ,
             async: false,
             success: function(msg){
-
             }
         }).responseText;
+        res = JSON.parse(res);
 
+        if (res.status === 'HTTP/1.1 200 OK') {
 
-    }
-});
-
-var Service = Backbone.Model.extend ({
-    defaults: {
-        jobList: 'undefined'
-    },
-    
-    getJobs: function () {
-        bodyContent = $.ajax({
-                        url: "/proxi/index.php?url=/typejob",
-                        async: false,
-                        type: "GET",
-                        dataType: "JSON",
-                        success: function(msg){
-                        }
-                     }
-                    ).responseText;
-
-        bodyContent = JSON.parse(bodyContent);
-        var bufer = '';
-        var str = '<select class="select"><option value="0">Click for a dropdown of jobs...</option>';
-        for (var i in bodyContent.list) {
-            bufer = JSON.parse(bodyContent.list[i]);
-            str += '<option value="' 
-                    + bufer.id 
-                    + '">' 
-                    + bufer.name
-                    + '</option>';
+            return  res.userId;
+        } else {
+            alert(res.parameters);
+            return false;
         }
-        str += '</select>'; 
-        return str;
+
     },
-    
+    getInfo:function(id){
+        var res = $.ajax({
+            type: "GET",
+            url: "/proxi/index.php",
+            data: "url=user/?id="+id,
+            async: false,
+            success: function(msg){
+            }
+        }).responseText;
+        res = JSON.parse(res);
+
+        if (res.status === 'HTTP/1.1 200 OK') {
+            var object = JSON.parse(res.object);
+            return  object;
+        } else {
+            alert(res.parameters);
+            return false;
+        }
+
+    },
     monthValid: function (val) {
         if (!parseInt(val)) {
             return false;
         }
-        
+
         if (parseInt(val) < 0 || parseInt(val) === 0 || parseInt(val) > 12) {
             return false;
         }
-        
+
         return true;
     },
-    
+
     dayValid: function (val) {
         if (!parseInt(val)) {
-             return false;
+            return false;
         }
 
         if (parseInt(val) < 0 || parseInt(val) === 0 || parseInt(val) > 31) {
-             return false;
+            return false;
         }
 
-        return true; 
+        return true;
     },
     yearValid: function (val) {
         if (!parseInt(val)) {
-             return false;
+            return false;
         }
 
         if (parseInt(val) < 1900) {
-             return false;
+            return false;
         }
 
         return true;
     },
     phoneValid: function (val) {
         var reg = "(\\+[0-9]+[\\- \\.]*)?"
-                + "(\\([0-9]+\\)[\\- \\.]*)?"
-                + "([0-9][0-9\\- \\.]+[0-9])";
+            + "(\\([0-9]+\\)[\\- \\.]*)?"
+            + "([0-9][0-9\\- \\.]+[0-9])";
         var arr = val.match(reg);
-        
+
         if(arr == null) {
             return false;
         }
-        
+
         //alert(arr[0] + '==' + arr[arr.length -1]);
         if (arr[0] === arr[arr.length -1]) {
             return true;
         }
         return false;
     }
+
 });
+
+var Service = Backbone.Model.extend ({
+    defaults: {
+        jobList: 'undefined'
+    }
+
+});
+var Job = Backbone.Model.extend ({
+    defaults: {
+        jobId: 'undefined',
+        name: 'undefined',
+        icon: 'undefined',
+        description: 'undefined',
+        minCost: 'undefined',
+        maxCost: 'undefined',
+        minTime: 'undefined',
+        minCostDistance: 'undefined',
+        maxCostDistance: 'undefined',
+        license: 'undefined'
+    },
+    getJob: function(id)
+    {
+       var bodyContent = $.ajax({
+                url: "/proxi/index.php?url=/typejob/?id="+id,
+                async: false,
+                type: "GET",
+                dataType: "JSON",
+                success: function(msg){
+                }
+            }
+        ).responseText;
+
+        bodyContent = JSON.parse(bodyContent);
+    },
+    getJobs: function () {
+        bodyContent = $.ajax({
+                url: "/proxi/index.php?url=/typejob",
+                async: false,
+                type: "GET",
+                dataType: "JSON",
+                success: function(msg){
+                }
+            }
+        ).responseText;
+
+        bodyContent = JSON.parse(bodyContent);
+        var bufer = '';
+        var str = '<select class="select"><option value="0">Click for a dropdown of jobs...</option>';
+        for (var i in bodyContent.list) {
+            bufer = JSON.parse(bodyContent.list[i]);
+            str += '<option value="'
+                + bufer.id
+                + '">'
+                + bufer.name
+                + '</option>';
+        }
+        str += '</select>';
+        return str;
+    }
+})
 
 
 

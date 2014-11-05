@@ -261,7 +261,28 @@ var Person = Backbone.Model.extend ({
 
 var Service = Backbone.Model.extend ({
     defaults: {
-        jobList: 'undefined'
+        height: 'undefined',
+        weight: 'undefined',
+        bodyType: 'undefined',
+        heirColor: 'undefined',
+        eyeColor: 'undefined',
+        ethnicity: 'undefined',
+        ratiing: 'undefined',
+        sex: 'undefined',
+        reliability: 'undefined',
+        description: 'undefined'
+    },
+    getService: function(id){
+        var response = $.ajax({
+            type: "GET",
+            url: "/proxi/index.php",
+            data: "url=service/?id="+id,
+            async: false,
+            success: function(msg){
+            }
+        }).responseText;
+        response = JSON.parse(response);
+        console.log(response);
     }
 
 });
@@ -316,6 +337,20 @@ var Job = Backbone.Model.extend ({
         }
         str += '</select>';
         return str;
+    },
+    getJobsList:function(){
+        bodyContent = $.ajax({
+                url: "/proxi/index.php?url=/typejob",
+                async: false,
+                type: "GET",
+                dataType: "JSON",
+                success: function(msg){
+                }
+            }
+        ).responseText;
+
+        bodyContent = JSON.parse(bodyContent);
+        return bodyContent.list;
     }
 })
 

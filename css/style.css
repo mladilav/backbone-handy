@@ -2521,56 +2521,13 @@ h2.captionLight {
 
 .category-jobs-item {
     display: inline-block;
-    background: url("../img/bio_schedule_job/sprite-category.png");
     width: 114px;
     height: 114px;
-    margin: 3px 0;
+    margin: 5px;
     cursor: pointer;
 }
 
-.category-jobs-item.active {
-    background-image: url("../img/bio_schedule_job/sprite-category-active.png");
-}
 
-.category-jobs-item-1 {
-    background-position: 0 0;
-}
-
-.category-jobs-item-2 {
-    background-position: -120px 0;
-}
-
-.category-jobs-item-3 {
-    background-position: -240px 0;
-}
-
-.category-jobs-item-4 {
-    background-position: -361px 0;
-}
-
-.category-jobs-item-5 {
-    background-position: -482px 0;
-}
-
-.category-jobs-item-6 {
-    background-position: 0 -120px;
-}
-
-.category-jobs-item-7 {
-    background-position: -120px -120px;
-}
-
-.category-jobs-item-8 {
-    background-position: -240px -120px;
-}
-
-.category-jobs-item-9 {
-    background-position: -361px -120px;
-}
-
-.category-jobs-item-10 {
-    background-position: -482px -120px;
-}
 
 .job-details-title {
     color: #212530;

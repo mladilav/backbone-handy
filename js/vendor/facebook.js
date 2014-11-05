@@ -92,13 +92,7 @@ $(document).on('click','.calendar-days-item',function(){
         $(this).addClass('active');
     }
 })
-$(document).on('click','.category-jobs-item',function(){
-    if($(this).hasClass('active')){
-        $(this).removeClass('active');
-    } else {
-        $(this).addClass('active');
-    }
-});
+
 $(window).scroll(function(){
         var scrollTop = $(window).scrollTop();
         if(scrollTop > 200){

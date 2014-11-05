@@ -219,7 +219,8 @@ var BioView = Backbone.View.extend({
             'click .work-schedule-next' : 'workScheduleNext',
             'click .job-details-next' : 'jobDetailsNext',
             'click .work-schedule-back' : 'workScheduleBack',
-            'click .bio-back' : 'bioBack'
+            'click .bio-back' : 'bioBack',
+            'click .category-jobs-item':'getJobInfo'
             //'click .login' : 'test'
         },
  
@@ -232,15 +233,7 @@ var BioView = Backbone.View.extend({
         TemplateManager.get(this.template, function(template){
             var html = $(template).tmpl();
             that.$el.html(html);
-            $(".slider").slider({
-                range: "min",
-                min: 50,
-                max: 70,
-                value: 60,
-                slide: function( event, ui ) {
-                    $( ".job-details-info-price-big" ).html( ui.value + "$");
-                }
-            });
+
             var storeUser = JSON.parse(localStorage.getItem('user'));
             var user = new Person();
             storeUser = user.getInfo(storeUser.id);
@@ -266,6 +259,31 @@ var BioView = Backbone.View.extend({
             if(storeUser.serviceId != null){
 
             }
+            var jobs = new Job();
+            var JobListArray = jobs.getJobsList();
+            for(var i=0;i<10;i++){
+               var job = JSON.parse(JobListArray[i]);
+               var icon = JSON.parse(job.icon);
+                var img = document.createElement("img");
+                img.setAttribute('src',"http://142.4.217.86"+icon.NA);
+                img.setAttribute('data-click-src',"http://142.4.217.86"+icon.A);
+                img.setAttribute('data-src',"http://142.4.217.86"+icon.NA);
+                img.setAttribute('class',"category-jobs-item");
+                img.setAttribute('data-id',job.id);
+                img.setAttribute('data-license',job.license);
+                $('.category-jobs').append(img);
+
+            }
+            $(".slider").slider({
+                range: "min",
+                min: 50,
+                max: 70,
+                value: 60,
+                slide: function( event, ui ) {
+                    $( ".job-details-info-price-big" ).html( ui.value + "$");
+                }
+            });
+
             localStorage.setItem('user', JSON.stringify(storeUser));
 
             $(that.$el).find(".select-bio").selectmenu({ width: 650, change: function( event, ui ) {
@@ -373,6 +391,15 @@ var BioView = Backbone.View.extend({
         $('.work-schedule-next').removeClass('job-details-next');
         $('.work-schedule-next').html('Work Schedule<i class="icon-arrow-next"></i>');
         this.displayBio();
+    },
+    getJobInfo:function(events){
+        if($(events.currentTarget).hasClass('active')){
+            $(events.currentTarget).removeClass('active');
+            $(events.currentTarget).attr('src',$(events.currentTarget).attr('data-src'));
+        } else {
+            $(events.currentTarget).addClass('active');
+            $(events.currentTarget).attr('src',$(events.currentTarget).attr('data-click-src'));
+        }
     }
 });
 
@@ -682,7 +709,7 @@ var RegisterView = Backbone.View.extend({
         var dob = date.getTime();
         storeUser.phoneNumber = $('#phone').val();
         storeUser.dob = dob;
-        storeUser.job = $(".ui-selectmenu-text").html();
+        storeUser.job = $(".select").val();
         var user = new Person();
         var res = user.register(storeUser);
         console.log(res);

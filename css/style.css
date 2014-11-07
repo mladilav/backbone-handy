@@ -998,9 +998,33 @@ h1.small {
 .video #video_background {
     position: absolute;
     left: 50%;
+    background: url("/img/main/BG.png");
     margin-left: -960px;
+    width:1920px;
+    height:5000px;
+    /*animation-duration*/
+    -webkit-animation-duration:200s;
+    -moz-animation-duration:200s;
+    -ms-animation-duration:200s;
+    -o-animation-duration:200s;
+    animation-duration:200s;
+    -webkit-animation-name:movement-left;
+    -moz-animation-name:movement-left;
+    -ms-animation-name:movement-left;
+    -o-animation-name:movement-left;
+    animation:movement-left;
+
+}
+@-webkit-keyframes movement-left {
+    from {background-position: 0 0;}
+    to {background-position: -30000px 0;}
 }
 
+/* Standard syntax */
+@keyframes movement-left {
+    from {background-position: 0 0;}
+    to {background-position: -30000px 0;}
+}
 .video-bottom {
     position: absolute;
     overflow: hidden;
@@ -2559,7 +2583,15 @@ h2.captionLight {
     width: 645px;
     margin-bottom: 20px;
 }
-
+.description{
+    font-family: OpenSans;
+    color: #212530;
+    font-size: 18px;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    width: 645px;
+    border-bottom: 1px solid #212530;
+}
 .job-details-info-text {
     color: #212530;
     float: left;

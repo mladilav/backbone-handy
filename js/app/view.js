@@ -27,7 +27,7 @@ var IndexView = Backbone.View.extend({
             'click #loginBtn' : 'loginPopUp',
             'mousewheel' : 'animation'
         },
- 
+
     initialize: function() {
         this.render();
     },
@@ -41,13 +41,13 @@ var IndexView = Backbone.View.extend({
         });
         return this;
     },
-    
+
     loginPopUp: function () {
         var loginWindow = new LoginView();
         $(this.el).append(loginWindow.el);
         loginWindow.show ();
     },
-    
+
     animation: function (event) {
         var st = event.deltaY;
 
@@ -213,7 +213,7 @@ var IndexView = Backbone.View.extend({
 
 });
 
-var BioView = Backbone.View.extend({ 
+var BioView = Backbone.View.extend({
     template: 'page-bio',
     events : {
             'click .work-schedule-next' : 'workScheduleNext',
@@ -223,11 +223,11 @@ var BioView = Backbone.View.extend({
             'click .category-jobs-item':'getJobInfo'
             //'click .login' : 'test'
         },
- 
+
     initialize: function() {
         this.render();
     },
- 
+
     render: function() {
         var that = this;
         TemplateManager.get(this.template, function(template){
@@ -261,7 +261,8 @@ var BioView = Backbone.View.extend({
             }
             var jobs = new Job();
             var JobListArray = jobs.getJobsList();
-            for(var i=0;i<10;i++){
+
+           for(var i=0;i<10;i++){
                var job = JSON.parse(JobListArray[i]);
                var icon = JSON.parse(job.icon);
                 var img = document.createElement("img");
@@ -274,17 +275,9 @@ var BioView = Backbone.View.extend({
                 $('.category-jobs').append(img);
 
             }
-            $(".slider").slider({
-                range: "min",
-                min: 50,
-                max: 70,
-                value: 60,
-                slide: function( event, ui ) {
-                    $( ".job-details-info-price-big" ).html( ui.value + "$");
-                }
-            });
 
-            localStorage.setItem('user', JSON.stringify(storeUser));
+
+            //localStorage.setItem('user', JSON.stringify(storeUser));
 
             $(that.$el).find(".select-bio").selectmenu({ width: 650, change: function( event, ui ) {
                 localStorage.setItem($(this).attr('rel'), $(this).val());
@@ -295,11 +288,11 @@ var BioView = Backbone.View.extend({
 
         });
         });
-        
+
         $('body').html(this.$el);
         /*$( ".select-bio" ).selectmenu({ width: 650, change: function( event, ui ) {
             localStorage.setItem($(this).attr('rel'), $(this).val());
-            } 
+            }
         });*/
         //$( ".select-2" ).selectmenu({ width: 225 });
         //return this;
@@ -396,9 +389,19 @@ var BioView = Backbone.View.extend({
         if($(events.currentTarget).hasClass('active')){
             $(events.currentTarget).removeClass('active');
             $(events.currentTarget).attr('src',$(events.currentTarget).attr('data-src'));
+            var id = $(events.currentTarget).attr('data-id');
+            $('div.job-'+id).remove();
         } else {
+
             $(events.currentTarget).addClass('active');
             $(events.currentTarget).attr('src',$(events.currentTarget).attr('data-click-src'));
+
+            var jobModel = new Job();
+            jobModel.getJob($(events.currentTarget).attr('data-id'));
+            var job = new JobView({model:jobModel});
+
+
+
         }
     }
 });
@@ -412,7 +415,7 @@ var LoginView = Backbone.View.extend({
     'click .fbBtn':'facebookAuth',
     'click #createAc': 'registerView'
   },
-  
+
   initialize: function () {
     this.render();
   },
@@ -426,7 +429,7 @@ var LoginView = Backbone.View.extend({
         });
         return this;
   },
-  
+
   show: function () {
 
       $( "#dialog" ).dialog({ minWidth: 450, minHeight: 717 });
@@ -450,7 +453,7 @@ var LoginView = Backbone.View.extend({
             $('.signIn').html('<i class="icon-lock-small"></i>Logout');
             $('.signIn').addClass('logOut');
             $('.logOut').removeClass('signIn');
-            location.href="/#bio";      
+            location.href="/#bio";
       }
   },
   registerView: function () {
@@ -503,12 +506,12 @@ var RegisterView = Backbone.View.extend({
     'click #fileupload': 'uploadAvatar'
 
   },
-  
+
   initialize: function () {
     this.render();
   },
   render: function () {
-      
+
     var that = this;
         TemplateManager.get(this.template, function(template){
             var html = $(template).tmpl();
@@ -544,12 +547,12 @@ var RegisterView = Backbone.View.extend({
                 appendTo: '#menu-container'
             });
         });
-  
+
 
     $('body').append(this.$el);
     return this;
   },
-  
+
   show: function () {
       $( "#dialog" ).dialog({ minWidth: 760, minHeight: 1050 });
       },
@@ -564,8 +567,8 @@ var RegisterView = Backbone.View.extend({
       $('.hoverText').hide();
     },
   login: function () {
-      console.log('login'); 
-  }, 
+      console.log('login');
+  },
   getJobsList: function () {
       var job = new Job ();
       return job.getJobs();
@@ -615,7 +618,7 @@ var RegisterView = Backbone.View.extend({
       var person = new Person();
       if(!person.monthValid ($('.month').val())) {
             var p = new PopUpLage;
-                p.set({'header':'Error', 
+                p.set({'header':'Error',
                     'body':'It is not a month inset corret month'});
             var pop = new popUpLageView({ model: p });
             $(pop.el).addClass('abs');
@@ -629,7 +632,7 @@ var RegisterView = Backbone.View.extend({
       var person = new Person();
       if(!person.dayValid ($('.day').val())) {
             var p = new PopUpLage;
-                p.set({'header':'Error', 
+                p.set({'header':'Error',
                     'body':'It is not a day inset corret day'});
             var pop = new popUpLageView({ model: p });
             $(pop.el).addClass('abs');
@@ -643,7 +646,7 @@ var RegisterView = Backbone.View.extend({
       var person = new Person();
       if(!person.yearValid ($('.year').val())) {
             var p = new PopUpLage;
-                p.set({'header':'Error', 
+                p.set({'header':'Error',
                     'body':'It is not a year inset corret year'});
             var pop = new popUpLageView({ model: p });
             $(pop.el).addClass('abs');
@@ -659,7 +662,7 @@ var RegisterView = Backbone.View.extend({
       var val = $('#phone').val();
       if(!person.phoneValid(val)) {
             var p = new PopUpLage;
-                p.set({'header':'Error', 
+                p.set({'header':'Error',
                     'body':'It is not a phone inset corret phone'});
             var pop = new popUpLageView({ model: p });
             $(pop.el).addClass('distance');
@@ -684,7 +687,7 @@ var RegisterView = Backbone.View.extend({
   phoneVerification: function () {
       var user = new Person();
       var res = user.sendMessage($('#phone').val());
-      
+
       $('#code').attr('value',res);
       return false;
   },
@@ -770,20 +773,20 @@ var popUpLight = Backbone.View.extend({
     $(this.el).html(_.template(this.template));
     return this;
   },
-  
+
   show: function () {
-   //$('#imgMessages').html();   
+   //$('#imgMessages').html();
   }
 });
 
 var popUpLageView = Backbone.View.extend({
     className: 'myPopUp Lage',
     template: '#page-popUp',
- 
+
     initialize: function() {
         this.render();
     },
- 
+
     render: function() {
         var template = _.template( $(this.template).html() );
         this.$el.html(template( this.model.toJSON() ));
@@ -812,9 +815,9 @@ var MainView = Backbone.View.extend({
         });
         return this;
   },
-  
+
   show: function () {
-   //$('#imgMessages').html();   
+   //$('#imgMessages').html();
   },
   loginPopUp: function () {
     var loginWindow = new LoginView();
@@ -897,3 +900,46 @@ var MainView = Backbone.View.extend({
         scrollFlag = 1;
     }
 });
+
+var JobView = Backbone.View.extend({
+    template: 'job-template',
+    events : {
+    },
+
+    initialize: function() {
+        this.render();
+    },
+
+    render: function(){
+        var that = this;
+        TemplateManager.get(this.template, function(template){
+            var html = $(template).tmpl();
+            var obj = that.model.toJSON();
+            $(html[0]).html(obj.name);
+            $(html[8]).addClass('slider-'+obj.id);
+
+            $(html[4]).html(obj.description);
+
+            $(html[10]).find(".minCost").html(obj.minCost+'$');
+            $(html[10]).find(".maxCost").html(obj.maxCost+'$');
+            console.log(html);
+            that.$el.html(html);
+            that.$el.attr('data-id',obj.id);
+            that.$el.addClass('job-'+obj.id);
+            $('#listOfJobs').append(that.$el);
+            console.log();
+            $('.slider-'+obj.id).slider({
+                range: "min",
+                min: 1*obj.minCost,
+                max: 1*obj.maxCost,
+                value: (1*obj.maxCost-1*obj.minCost)/2,
+                slide: function( event, ui ) {
+                   // $( ".job-details-info-price-big" ).html( ui.value + "$");
+                    $(html[6]).find("#price").html(ui.value + "$");
+                }
+            });
+
+        });
+        return this;
+    }
+})

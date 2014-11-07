@@ -288,6 +288,7 @@ var Service = Backbone.Model.extend ({
 });
 var Job = Backbone.Model.extend ({
     defaults: {
+        id: 'undefined',
         jobId: 'undefined',
         name: 'undefined',
         icon: 'undefined',
@@ -298,6 +299,14 @@ var Job = Backbone.Model.extend ({
         minCostDistance: 'undefined',
         maxCostDistance: 'undefined',
         license: 'undefined'
+    },
+    setFilds: function (obj) {
+        obj = JSON.parse(obj);
+        for(var p in obj) {
+            if(typeof(this.get(p)) === 'string') {
+                this.set(p, obj[p]);
+            }
+        }
     },
     getJob: function(id)
     {
@@ -310,8 +319,10 @@ var Job = Backbone.Model.extend ({
                 }
             }
         ).responseText;
-
         bodyContent = JSON.parse(bodyContent);
+        if(bodyContent.status == 'HTTP/1.1 200 OK'){
+        this.setFilds(bodyContent.object);}
+        return bodyContent;
     },
     getJobs: function () {
         bodyContent = $.ajax({
@@ -350,6 +361,7 @@ var Job = Backbone.Model.extend ({
         ).responseText;
 
         bodyContent = JSON.parse(bodyContent);
+
         return bodyContent.list;
     }
 })

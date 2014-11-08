@@ -14,6 +14,7 @@ App.Router = Backbone.Router.extend({
         ''     : 'index',
         'bio'  : 'bio',
         'main' : 'main',
+        'terms' : 'terms',
         '404'  : 'p404'
     },
     index: function () {
@@ -39,6 +40,10 @@ App.Router = Backbone.Router.extend({
     main: function () {
         $('body').html('');
         var page = new MainView ();
+    },
+    terms: function () {
+        $('body').html('');
+        var page = new TermsView ();
     },
     
     p404: function () {

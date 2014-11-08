@@ -2862,3 +2862,31 @@ h2.captionLight {
     margin-left: 5px;
 
 }
+.steps-2,.steps-3{
+    height: 0px;
+    overflow: hidden;
+}
+.terms-page .darkLargeTitle{
+    line-height: 120px;
+    text-align: center;
+}
+.terms-page p {
+    margin: 10px 0;
+    font-family: OpenSans;
+
+}
+.terms-page .caption{
+    font-size: 22px;
+    padding-left: 50px;
+    font-family: OpenSansBold;
+}
+.terms-page .underline{
+    text-decoration: underline;
+}
+.terms-page ul li{
+    list-style-type: disc;
+    margin-left: 100px;
+}
+.terms-page .quete{
+    margin-left: 50px;
+}

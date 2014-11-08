@@ -411,7 +411,7 @@ var LoginView = Backbone.View.extend({
   className: 'lDialog',
   events: {
     'click #clLogin': 'login',
-    'click .ui-dialog-titlebar-close': 'close',
+    'click .ui-icon-closethick': 'close',
     'click .fbBtn':'facebookAuth',
     'click #createAc': 'registerView'
   },
@@ -438,8 +438,8 @@ var LoginView = Backbone.View.extend({
 
   },
   close: function () {
-      //$('#dialog').dialog('close');
       $('.lDialog').remove();
+      $('.ui-dialog').remove();
       $(".back").addClass("hide");
   },
   login: function () {
@@ -500,6 +500,7 @@ var RegisterView = Backbone.View.extend({
     'blur .day': 'dateValid',
     'blur .year': 'dateValid',
     'blur #phone': 'phoneValid',
+    'blur #userCode': 'showLastStep',
     'click .ui-menu-item': 'jobValid',
     'click #sendVerification': 'phoneVerification',
     'click #regSubmit': 'registerUser',
@@ -689,8 +690,12 @@ var RegisterView = Backbone.View.extend({
       var res = user.sendMessage($('#phone').val());
 
       $('#code').attr('value',res);
+      $('.steps-2').toggle();
       return false;
   },
+    showLastStep:function(){
+        $('.steps-3').toggle();
+    },
   registerUser: function () {
       var userCode = $('#userCode').val();
       var serverCode = '1234';
@@ -799,7 +804,10 @@ var MainView = Backbone.View.extend({
             'click .signIn' : 'loginPopUp',
             'click #registration' : 'regPopUp',
             'click .become-handyboy-button' : 'scrollDown',
+            'click .play-button' : 'playVideo',
+            'click .terms' : 'terms',
             'mousewheel':'animation'
+
         },
   initialize: function () {
     this.render();
@@ -898,12 +906,22 @@ var MainView = Backbone.View.extend({
    },
     second_passed: function(){
         scrollFlag = 1;
+    },
+    playVideo: function(){
+        var video = new VideoView();
+        video.show();
+    },
+    terms:function(){
+        var termsV = new TermsView();
+        location.href="/#terms";
     }
+
 });
 
 var JobView = Backbone.View.extend({
     template: 'job-template',
     events : {
+        'click .distance':'distance'
     },
 
     initialize: function() {
@@ -915,6 +933,7 @@ var JobView = Backbone.View.extend({
         TemplateManager.get(this.template, function(template){
             var html = $(template).tmpl();
             var obj = that.model.toJSON();
+
             $(html[0]).html(obj.name);
             $(html[8]).addClass('slider-'+obj.id);
 
@@ -922,12 +941,10 @@ var JobView = Backbone.View.extend({
 
             $(html[10]).find(".minCost").html(obj.minCost+'$');
             $(html[10]).find(".maxCost").html(obj.maxCost+'$');
-            console.log(html);
             that.$el.html(html);
             that.$el.attr('data-id',obj.id);
             that.$el.addClass('job-'+obj.id);
             $('#listOfJobs').append(that.$el);
-            console.log();
             $('.slider-'+obj.id).slider({
                 range: "min",
                 min: 1*obj.minCost,
@@ -938,8 +955,73 @@ var JobView = Backbone.View.extend({
                     $(html[6]).find("#price").html(ui.value + "$");
                 }
             });
+            if((obj.id == '1')||(obj.id == '2')){
+                $('.personal-trainer').attr("style","display:block;");
+            }
+
+        });
+        return this;
+    },
+    distance: function(){
+        if($('.distance:checked').val() == 'on'){
+            var obj = this.model.toJSON();
+            var addons = new Addons();
+            var addonsArray = addons.getAddonsByTypeJob(obj.id);
+            for(var i = 0;i < addonsArray.length;i++){
+                var addonModel = new Addons(addonsArray[i]);
+                var addonView = new AddonsView({model:addonModel});
+            }
+
+        }
+    }
+
+})
+var VideoView = Backbone.View.extend({
+    template: 'video-template',
+    className: 'lDialog',
+
+    events : {
+        'click .distance':'distance',
+        'click .ui-icon-closethick':'close'
+    },
+    initialize: function() {
+        this.render();
+    },
+
+    render: function(){
+        var that = this;
+        TemplateManager.get(this.template, function(template){
+            var html = $(template).tmpl();
+            that.$el.html(html);
+            $('body').append(that.$el);
+            $(".back").removeClass("hide");
+        });
+    },
+    show: function () {
+        $( "#dialog" ).dialog({ minWidth: 800, minHeight: 200 });
+    },
+    close: function () {
+
+        $('.lDialog').remove();
+        $(".back").addClass("hide");
+        $('#dialog').dialog('close');
+    }
+})
+var TermsView = Backbone.View.extend({
+    template: 'page-terms',
+    initialize: function () {
+        this.render();
+    },
+    render: function () {
+        var that = this;
+        TemplateManager.get(this.template, function(template){
+            var html = $(template).tmpl();
+            that.$el.html(html);
+            $('body').html(that.$el);
 
         });
         return this;
     }
+
 })
+

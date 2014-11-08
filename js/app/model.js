@@ -365,6 +365,39 @@ var Job = Backbone.Model.extend ({
         return bodyContent.list;
     }
 })
+var Addons = Backbone.Model.extend ({
+    defaults: {
+        id: 'undefined',
+        name: 'undefined',
+        minCost: 'undefined',
+        maxCost: 'undefined',
+        time: 'undefined',
+        typeJobId: 'undefined'
+    },
+    setFilds: function (obj) {
+        obj = JSON.parse(obj);
+        for(var p in obj) {
+            if(typeof(this.get(p)) === 'string') {
+                this.set(p, obj[p]);
+            }
+        }
+    },
+    getAddonsByTypeJob: function(id)
+    {
+        var bodyContent = $.ajax({
+                url: "/proxi/index.php?url=/addons/?jobId="+id,
+                async: false,
+                type: "GET",
+                dataType: "JSON",
+                success: function(msg){
+                }
+            }
+        ).responseText;
+        bodyContent = JSON.parse(bodyContent);
+        if(bodyContent.status == 'HTTP/1.1 200 OK'){
+            return JSON.parse(bodyContent.list);}
+    }
+})
 
 
 

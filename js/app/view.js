@@ -411,7 +411,7 @@ var LoginView = Backbone.View.extend({
   className: 'lDialog',
   events: {
     'click #clLogin': 'login',
-    'click .ui-icon-closethick': 'close',
+    'click .close-icon': 'close',
     'click .fbBtn':'facebookAuth',
     'click #createAc': 'registerView'
   },
@@ -431,10 +431,6 @@ var LoginView = Backbone.View.extend({
   },
 
   show: function () {
-
-      $( "#dialog" ).dialog({ minWidth: 450, minHeight: 717 });
-
-
 
   },
   close: function () {
@@ -690,11 +686,11 @@ var RegisterView = Backbone.View.extend({
       var res = user.sendMessage($('#phone').val());
 
       $('#code').attr('value',res);
-      $('.steps-2').toggle();
+      $('.steps-2').animate({height: 52}, 1000);
       return false;
   },
     showLastStep:function(){
-        $('.steps-3').toggle();
+        $('.steps-3').animate({height: 52}, 1000);
     },
   registerUser: function () {
       var userCode = $('#userCode').val();
@@ -806,6 +802,8 @@ var MainView = Backbone.View.extend({
             'click .become-handyboy-button' : 'scrollDown',
             'click .play-button' : 'playVideo',
             'click .terms' : 'terms',
+            'click .privacy' : 'privacy',
+            'click .services-contract' : 'servicesContract',
             'mousewheel':'animation'
 
         },
@@ -829,7 +827,6 @@ var MainView = Backbone.View.extend({
   },
   loginPopUp: function () {
     var loginWindow = new LoginView();
-    //$(this.el).append(loginWindow.el);
     loginWindow.show ();
   },
   regPopUp: function () {
@@ -895,6 +892,9 @@ var MainView = Backbone.View.extend({
        if(scrollTop > 1000){
            $('.textAnimationTwo').delay(300).addClass('textAnimationTwo-1');
            $('.textTwo').delay(400).addClass('textTwo-1');
+           $('.image-phone').delay(400).addClass('image-phone-1');
+          setTimeout(function(){
+           $('.image-phone').delay(800).addClass('image-phone-2');},400);
            $('.why-join').delay(400).addClass('why-join-1');
        }
        if(scrollTop > 1500){
@@ -914,7 +914,16 @@ var MainView = Backbone.View.extend({
     terms:function(){
         var termsV = new TermsView();
         location.href="/#terms";
+    },
+    servicesContract: function(){
+        var contract = new ContractView();
+        location.href="/#contract";
+    },
+    privacy: function(){
+        var privacy = new PrivacyView();
+        location.href="/#privacy";
     }
+
 
 });
 
@@ -941,6 +950,7 @@ var JobView = Backbone.View.extend({
 
             $(html[10]).find(".minCost").html(obj.minCost+'$');
             $(html[10]).find(".maxCost").html(obj.maxCost+'$');
+            $(html[12]).addClass('job-distance-'+obj.id);
             that.$el.html(html);
             that.$el.attr('data-id',obj.id);
             that.$el.addClass('job-'+obj.id);
@@ -965,12 +975,23 @@ var JobView = Backbone.View.extend({
     distance: function(){
         if($('.distance:checked').val() == 'on'){
             var obj = this.model.toJSON();
-            var addons = new Addons();
+           // $('.job-distance-'+obj.id).find('.job-details-info-price-distance').show();
+            $('.slider-distance').addClass('slider-distance-'+obj.id);
+            $('.slider-distance-'+obj.id).slider({
+                range: "min",
+                min: 1*obj.minCostDistance,
+                max: 1*obj.maxCostDistance,
+                value: (1*obj.maxCostDistance-1*obj.minCostDistance)/2,
+                slide: function( event, ui ) {
+                    $('.slider-distance-'+obj.id).siblings('.job-details-info').find('.job-details-info-price-big').html( ui.value + "$");
+                }
+            });
+            /*var addons = new Addons();
             var addonsArray = addons.getAddonsByTypeJob(obj.id);
             for(var i = 0;i < addonsArray.length;i++){
                 var addonModel = new Addons(addonsArray[i]);
                 var addonView = new AddonsView({model:addonModel});
-            }
+            }*/
 
         }
     }
@@ -981,8 +1002,10 @@ var VideoView = Backbone.View.extend({
     className: 'lDialog',
 
     events : {
-        'click .distance':'distance',
-        'click .ui-icon-closethick':'close'
+
+        'click .close-icon':'close',
+        'mouseover .close-icon':'hoverText',
+        'mouseout .close-icon':'HideHoverText'
     },
     initialize: function() {
         this.render();
@@ -1005,10 +1028,21 @@ var VideoView = Backbone.View.extend({
         $('.lDialog').remove();
         $(".back").addClass("hide");
         $('#dialog').dialog('close');
+    },
+    hoverText:function(){
+        $('.hoverText').show();
+    },
+    HideHoverText: function(){
+        $('.hoverText').hide();
     }
 })
 var TermsView = Backbone.View.extend({
     template: 'page-terms',
+    events :{
+        'click .terms' : 'terms',
+        'click .privacy' : 'privacy',
+        'click .services-contract' : 'servicesContract'
+    },
     initialize: function () {
         this.render();
     },
@@ -1021,7 +1055,89 @@ var TermsView = Backbone.View.extend({
 
         });
         return this;
+    },
+    terms:function(){
+        var termsV = new TermsView();
+        location.href="/#terms";
+    },
+    servicesContract: function(){
+        var contract = new ContractView();
+        location.href="/#contract";
+    },
+    privacy: function(){
+        var privacy = new PrivacyView();
+        location.href="/#privacy";
     }
 
-})
+});
+
+var ContractView = Backbone.View.extend({
+    template: 'page-services-contract',
+    events :{
+        'click .terms' : 'terms',
+        'click .privacy' : 'privacy',
+        'click .services-contract' : 'servicesContract'
+    },
+    initialize: function () {
+        this.render();
+    },
+    render: function () {
+        var that = this;
+        TemplateManager.get(this.template, function(template){
+            var html = $(template).tmpl();
+            that.$el.html(html);
+            $('body').html(that.$el);
+
+        });
+        return this;
+    },
+    terms:function(){
+        var termsV = new TermsView();
+        location.href="/#terms";
+    },
+    servicesContract: function(){
+        var contract = new ContractView();
+        location.href="/#contract";
+    },
+    privacy: function(){
+        var privacy = new PrivacyView();
+        location.href="/#privacy";
+    }
+
+});
+var PrivacyView = Backbone.View.extend({
+    template: 'page-privacy',
+    events :{
+        'click .terms' : 'terms',
+        'click .privacy' : 'privacy',
+        'click .services-contract' : 'servicesContract'
+    },
+    initialize: function () {
+        this.render();
+    },
+    render: function () {
+        var that = this;
+        TemplateManager.get(this.template, function(template){
+            var html = $(template).tmpl();
+            that.$el.html(html);
+            $('body').html(that.$el);
+
+        });
+        return this;
+    },
+    terms:function(){
+        var termsV = new TermsView();
+        location.href="/#terms";
+    },
+    servicesContract: function(){
+        var contract = new ContractView();
+        location.href="/#contract";
+    },
+    privacy: function(){
+        var privacy = new PrivacyView();
+        location.href="/#privacy";
+    }
+
+});
+
 

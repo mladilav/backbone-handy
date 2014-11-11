@@ -15,6 +15,8 @@ App.Router = Backbone.Router.extend({
         'bio'  : 'bio',
         'main' : 'main',
         'terms' : 'terms',
+        'contract' : 'contract',
+        'privacy' : 'privacy',
         '404'  : 'p404'
     },
     index: function () {
@@ -41,9 +43,17 @@ App.Router = Backbone.Router.extend({
         $('body').html('');
         var page = new MainView ();
     },
+    contract: function(){
+        $('body').html('');
+        var page = new ContractView ();
+    },
     terms: function () {
         $('body').html('');
         var page = new TermsView ();
+    },
+    privacy: function () {
+        $('body').html('');
+        var page = new PrivacyView ();
     },
     
     p404: function () {

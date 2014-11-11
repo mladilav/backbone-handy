@@ -2099,11 +2099,11 @@ h2.captionLight {
     transform: rotate(0deg);
 }
 .play-button{
-    -moz-transform: rotate(360deg) scale(0.1);
-    -ms-transform: rotate(360deg) scale(0.1);
-    -webkit-transform: rotate(360deg) scale(0.1);
-    -o-transform: rotate(360deg) scale(0.1);
-    transform: rotate(360deg) scale(0.1);
+    -moz-transform: scale(0.1);
+    -ms-transform:scale(0.1);
+    -webkit-transform: scale(0.1);
+    -o-transform: scale(0.1);
+    transform: scale(0.1);
     -webkit-transition: .8s ease-out;
     -o-transition: .8s ease-out;
     -moz-transition: .8s ease-out;
@@ -2111,17 +2111,46 @@ h2.captionLight {
 }
 
 .play-button-1{
-    -moz-transform: rotate(0deg) scale(1);
-    -ms-transform: rotate(0deg) scale(1);
-    -webkit-transform: rotate(0deg) scale(1);
-    -o-transform: rotate(0deg) scale(1);
-    transform: rotate(0deg) scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    transform:scale(1);
     -webkit-transition: .8s ease-out;
     -o-transition: .8s ease-out;
     -moz-transition: .8s ease-out;
     transition: .8s ease-out;
 }
+.image-phone{
+    -moz-transform: scale(0.5);
+    -ms-transform:scale(0.5);
+    -webkit-transform: scale(0.5);
+    -o-transform: scale(0.5);
+    transform: scale(0.5);
+    -webkit-transition: .4s ease-out;
+    -o-transition: .4s ease-out;
+    -moz-transition: .4s ease-out;
+    transition: .4s ease-out;
+}
+.image-phone-1{
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform:scale(1.2);
+    -webkit-transition: .4s ease-out;
+    -o-transition: .4s ease-out;
+    -moz-transition: .4s ease-out;
+    transition: .4s ease-out;
+}
+.image-phone-2{
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    transform:scale(1);
 
+}
 
 .screen-three .image {
     opacity: 0;
@@ -2625,6 +2654,8 @@ h2.captionLight {
     font-family: OpenSans;
     font-size: 14px;
     margin-top: 20px;
+    float: left;
+    width: 500px;
 }
 
 .job-details-info-texts {
@@ -2655,7 +2686,7 @@ h2.captionLight {
 
 .job-details-check {
     font-family: OpenSans;
-    margin: 20px 0;
+    margin: -30px 0 30px 0;
 }
 
 .job-details-check label {
@@ -2862,7 +2893,7 @@ h2.captionLight {
     margin-left: 5px;
 
 }
-.steps-2,.steps-3{
+.steps li.steps-2,.steps li.steps-3{
     height: 0px;
     overflow: hidden;
 }
@@ -2889,4 +2920,88 @@ h2.captionLight {
 }
 .terms-page .quete{
     margin-left: 50px;
+}
+.slider-distance{
+    margin-bottom: 50px;
+}
+/*.job-details-info-price-distance{
+    opacity: 0;
+}*/
+
+/* Popups */
+/*video*/
+.loginPopup{
+    height: 740px;
+    width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    margin-left: -200px;
+    z-index: 999;
+}
+.PopupVideo{
+    height: 800px;
+    width: 800px;
+    padding: 20px;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    margin-top: -400px;
+    left: 50%;
+    margin-left: -400px;
+    z-index: 999;
+}
+.PopupVideo #regHeader {
+    height: 102px;
+    width: 100%;
+    display: inline-block;
+}
+
+
+.PopupVideo .logoLeft {
+    width: 210px;
+    height: 100%;
+    background-image: url('../img/register/smalllogo.png');
+    background-repeat: no-repeat;
+    float: left;
+    margin: 19px 19px;
+}
+
+.PopupVideo .logoLeft {
+    height: 57px;
+}
+
+.PopupVideo .hoverText {
+    float: left;
+    font-family: OpenSans;
+    font-size: 14px;
+    color: #1f232d;
+    margin-top: 12px;
+    margin-left: 250px;
+    display: none;
+}
+.close-icon{
+    width: 27px;
+    height: 27px;
+    font-size: 0px;
+    padding: 0px;
+    border: none;
+    outline: none;
+    float: right;
+    background-image: url('../img/login/close_naLOGIN.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 12px;
+    margin-right: 17px;
+    background-color: #fff;
+}
+
+.close-icon:hover {
+    background-image: url('../img/login/close_hoverLOGIN.png');
+}
+
+.close-icon:active {
+    background-image: url('../img/login/close_clickLOGIN.png');
 }

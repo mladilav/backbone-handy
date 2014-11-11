@@ -1649,6 +1649,20 @@ footer ul li a {
     cursor: pointer;
 }
 
+.btn-gray {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-family: OpenSansLight;
+    font-size: 25px;
+    padding: 10px 30px;
+    border: 0;
+    background: #8f9196;
+    /*border-bottom: 5px solid #5b2832;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;*/
+    cursor: pointer;
+}
+
 .header .btn-dark {
     margin: 47px 0px 0px 42px;
 }
@@ -2948,7 +2962,6 @@ h2.captionLight {
     background-color: #fff;
     position: absolute;
     top: 50%;
-    margin-top: -400px;
     left: 50%;
     margin-left: -400px;
     z-index: 999;
@@ -3004,4 +3017,26 @@ h2.captionLight {
 
 .close-icon:active {
     background-image: url('../img/login/close_clickLOGIN.png');
+}
+.btn-group-video{
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+.btn-group-video .btn-dark,.btn-group-video .btn-gray{
+    margin-bottom: 5px;
+    width: 315px;
+    font-size: 22px;
+    padding: 7px;
+}
+
+.btn-group-video .btn-dark .small,.btn-group-video .btn-gray .small{
+    font-size: 15px;
+    text-transform: none;
+    display: block;
+    margin-top: -6px;
+
+}
+.btn-red.main{
+    margin-top: 200px;
 }

@@ -76,7 +76,6 @@ var Person = Backbone.Model.extend ({
         longitude: 'undefined'
     },
     login: function (email, password) {
-
         var res = $.ajax({
                         type: "POST",
                         url: "/proxi/index.php",
@@ -89,12 +88,12 @@ var Person = Backbone.Model.extend ({
 
                         }
                     }).responseText;
-        
-       
+
         res = JSON.parse(res);
         if (res.status === 'HTTP/1.1 200 OK') {
             this.setFilds(res.object);
             localStorage.setItem('user', JSON.stringify(this));
+            localStorage.setItem('user_session_id', res.session_id);
             return true;
         } else {
             alert(res.parameters);
@@ -136,7 +135,7 @@ var Person = Backbone.Model.extend ({
      return false;
     },
     sendMessage: function (number) {
-        bodyContent = $.ajax({
+        var bodyContent = $.ajax({
                         url: "/twilio/index.php?number="+ number,
                         async: false,
                         type: "GET",
@@ -397,63 +396,93 @@ var Addons = Backbone.Model.extend ({
         if(bodyContent.status == 'HTTP/1.1 200 OK'){
             return JSON.parse(bodyContent.list);}
     }
-})
+});
 
+var Schedule = Backbone.Model.extend({
+    defaults: {
+        day:        '',
+        time:       '',
+        serviceId:  ''
+    },
+    setFields: function(obj){
+        obj = JSON.parse(obj);
+        for(var p in obj) {
+            if(typeof(this.get(p)) === 'string') {
+                this.set(p, obj[p]);
+            }
+        }
+    },
+    getByDay: function(dayId, serviceId, func){
+        $.ajax({
+            url:    '/proxi/index.php?url=' + encodeURIComponent('/schedule?serviceId=' + serviceId + '&day=' + dayId ) + '&session=' + localStorage.getItem('user_session_id') ,
+            type:   'GET',
+            success:function(data){
+                var schedule = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                obj = JSON.parse(data);
+                if (obj.status.indexOf('200 OK')!==-1){
+                    obj =   JSON.parse( JSON.parse( obj.object  ).time );
+                    for (i in obj){
+                        hr_min = obj[i].start.split(':');
+                        startCnt = getJ(hr_min);
+                        hr_min = obj[i].end.split(':');
+                        stopCnt = getJ(hr_min);
+                        if (startCnt > stopCnt){
+                            for (j=0; j<=stopCnt; j++){
+                                schedule[j] = 1;
+                            }
+                            for (j=startCnt; j<48; j++){
+                                schedule[j] = 1;
+                            }
+                        }else{
+                            for (j=startCnt; j<=stopCnt; j++){
+                                schedule[j] = 1;
+                            }
+                        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    }
+                }
+                func(schedule);
+            }
+        });
+        //
+        
+    },
+    pressHrs: function(items, day){
+        var schedule = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        $('div', $(items)).each(function(i){
+            if ($(this).hasClass('active')){
+                schedule[i] = 1;
+            }
+        });
+        
+        
+        var scheduleFormatted = [];
+        var prev = 0;
+        var lastSFcounter = 0;
+        for (i=0; i<48; i++){
+            if (schedule[i]==1 && prev==0){
+                hrs = parseInt(i/2)+8;
+                if (hrs>24) hrs -=24;
+                time = hrs + ':' + ((i%2==0)?'00':'30');
+                scheduleFormatted[lastSFcounter] = {'start': time, 'end': ''};
+            }
+            if (schedule[i]==0 && prev==1){
+                hrs = parseInt(i/2)+8;
+                if (hrs>24) hrs -=24;
+                time = hrs + ':' + ((i%2==0)?'00':'30');
+                scheduleFormatted[lastSFcounter++].end = time;
+            }
+            prev = schedule[i];
+        }
+        $.ajax({
+            url:    '/proxi/index.php',
+            type:   'POST',
+            data:   'url=/schedule/add&session='+localStorage.getItem('user_session_id')+'&serviceId=1&day='+day+'&time='+JSON.stringify(scheduleFormatted),
+            success:function(){}
+        });
+        
+    }
+});
 
 
 
@@ -499,4 +528,11 @@ function getCookie(name) {
 
 function deleteCookie(name) {
   setCookie(name, "", { expires: -1 });
+}
+
+function getJ(hr_min){
+    j = parseInt(hr_min[0]) * 2  - 16;
+    if (j<0) j += 48;
+    if (hr_min[1]=='30') j+=1;
+    return j;
 }

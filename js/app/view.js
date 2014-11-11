@@ -497,7 +497,6 @@ var RegisterView = Backbone.View.extend({
     'blur .year': 'dateValid',
     'blur #phone': 'phoneValid',
     'blur #userCode': 'showLastStep',
-    'click .ui-menu-item': 'jobValid',
     'click #sendVerification': 'phoneVerification',
     'click #regSubmit': 'registerUser',
     'click #fileupload': 'uploadAvatar'
@@ -670,16 +669,6 @@ var RegisterView = Backbone.View.extend({
             $('#phone').removeClass('error');
             $('#phone').removeClass('empty');
         }
-  },
-
-  jobValid:function(){
-      $('#jobValidate').show();
-      var val = $('.select').val();
-      if (val!=0){
-          $('#jobValidate').hide();
-          return;
-      }
-
   },
   phoneVerification: function () {
       var user = new Person();

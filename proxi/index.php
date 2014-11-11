@@ -8,15 +8,18 @@
         return false;
     }
     
+    
     function sendPost ($url=null, $a=null) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://142.4.217.86/' . $url);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1); 
-        //$a = array ("email"=>"vokrab3@gmail.com","password"=>"123456");
+        if (isset($_POST['session'])){
+            curl_setopt($ch, CURLOPT_COOKIE, 'PHPSESSID='.$_POST['session']);
+            unset($a['session']);
+        }
         $data = json_encode($a);
-
         curl_setopt($ch, CURLOPT_POSTFIELDS, array("data"=> $data) );
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -34,6 +37,9 @@
         curl_setopt($ch, CURLOPT_POST, 0); 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        if (isset($_GET['session'])){
+            curl_setopt($ch, CURLOPT_COOKIE, 'PHPSESSID='.$_GET['session']);
+        }
         $output = curl_exec($ch);
         curl_close($ch);
 

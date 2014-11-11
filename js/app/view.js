@@ -220,7 +220,9 @@ var BioView = Backbone.View.extend({
             'click .job-details-next' : 'jobDetailsNext',
             'click .work-schedule-back' : 'workScheduleBack',
             'click .bio-back' : 'bioBack',
-            'click .category-jobs-item':'getJobInfo'
+            'click .category-jobs-item':'getJobInfo',
+            'click .calendar-days-item': 'setSchedule',
+            'click ul.calendar-week li': 'getDayOfWeek'
             //'click .login' : 'test'
         },
 
@@ -254,7 +256,28 @@ var BioView = Backbone.View.extend({
                 }
             }).responseText;
             res = JSON.parse(res);
-            $('.address').html(res.results[0].formatted_address);
+            if (res.results[0]){
+                $('.address').html(res.results[0].formatted_address);
+            }
+            $('').click(function(){
+                console.log( $(this) );
+                
+                return false;
+            });
+            that.currentDay = 2;
+            var scheduleModel = new Schedule();
+            scheduleModel.getByDay(2, 1, function(schedule){
+                for (i in schedule){
+                    if (schedule[i]==0){
+                        $('.calendar .calendar-days-item:eq('+i+')').removeClass('active');
+                    }else{
+                        $('.calendar .calendar-days-item:eq('+i+')').addClass('active');
+                    }
+                }
+            });
+
+            
+            
 
             if(storeUser.serviceId != null){
 
@@ -399,10 +422,32 @@ var BioView = Backbone.View.extend({
             var jobModel = new Job();
             jobModel.getJob($(events.currentTarget).attr('data-id'));
             var job = new JobView({model:jobModel});
-
-
-
         }
+    },
+    setSchedule:function(){
+        var scheduleModel = new Schedule();
+        //scheduleModel.pressHrs(this);
+        scheduleModel.pressHrs( $('.calendar-days')[0], this.currentDay );
+        
+        
+    },
+    getDayOfWeek: function(el){
+        day = parseInt($('a', $(el.currentTarget)).attr('rel')) ;
+        this.currentDay = day;
+        var scheduleModel = new Schedule;
+        scheduleModel.getByDay(day, 1, function(schedule){
+            for (i in schedule){
+                if (schedule[i]==0){
+                    $('.calendar .calendar-days-item:eq('+i+')').removeClass('active');
+                }else{
+                    $('.calendar .calendar-days-item:eq('+i+')').addClass('active');
+                }
+            }
+        });
+        $('li', $(el.currentTarget).parent()).removeClass('active');
+        $(el.currentTarget).addClass('active');
+        
+        return false;
     }
 });
 

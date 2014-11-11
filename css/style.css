@@ -1509,6 +1509,8 @@ header .dropdown-user-menu {
     display: inline-block;
     width: 100%;
     margin-top: 30px;
+    min-height: 1020px;
+
 }
 
 .bio .leftPart {

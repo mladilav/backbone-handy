@@ -20,7 +20,12 @@
             unset($a['session']);
         }
         $data = json_encode($a);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, array("data"=> $data) );
+        if (isset($_GET['nopack'])){
+            $a['data'] = $data;
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $a);
+        }else{
+            curl_setopt($ch, CURLOPT_POSTFIELDS, array("data"=> $data) );
+        }
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         $output = curl_exec($ch);

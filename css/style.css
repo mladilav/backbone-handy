@@ -2511,7 +2511,17 @@ h2.captionLight {
 
 }
 .calendar-day li a{
-   padding: 5px 35px;
+/*   padding: 5px 35px;*/
+    padding: 5px 0;
+    text-align: center;
+    width: 72px;
+}
+
+.calendar-day li.calendar-prev a{
+    text-aling: left;
+}
+.calendar-day li.calendar-next a{
+    text-align: right;
 }
 
 .calendar-week li.active a,.calendar-day li.active a,.calendar-month li.active a{

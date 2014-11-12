@@ -412,9 +412,14 @@ var Schedule = Backbone.Model.extend({
             }
         }
     },
-    getByDay: function(dayId, serviceId, func){
+    getByDay: function(dayId, serviceId, isCustomDate, func){
+        if (isCustomDate){
+            url = '/schedule?current=yes&serviceId=' + serviceId + '&date=' + dayId['day'] + '.' + dayId['month'] + '.2014'; 
+        }else{
+            url = '/schedule?serviceId=' + serviceId + '&day=' + dayId;
+        }
         $.ajax({
-            url:    '/proxi/index.php?url=' + encodeURIComponent('/schedule?serviceId=' + serviceId + '&day=' + dayId ) + '&session=' + localStorage.getItem('user_session_id') ,
+            url:    '/proxi/index.php?url=' + encodeURIComponent( url ) + '&session=' + localStorage.getItem('user_session_id') ,
             type:   'GET',
             success:function(data){
                 var schedule = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -447,7 +452,7 @@ var Schedule = Backbone.Model.extend({
         //
         
     },
-    pressHrs: function(items, day){
+    pressHrs: function(items, day, isCustomDate){
         var schedule = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         $('div', $(items)).each(function(i){
             if ($(this).hasClass('active')){
@@ -474,10 +479,15 @@ var Schedule = Backbone.Model.extend({
             }
             prev = schedule[i];
         }
+        if (isCustomDate){
+            url = '/schedule/add&session='+localStorage.getItem('user_session_id')+'&serviceId=1&date='+day+'&time='+JSON.stringify(scheduleFormatted).replace('"', '\"');
+        }else{
+            url = '/schedule/add&session='+localStorage.getItem('user_session_id')+'&serviceId=1&day='+day+'&time='+JSON.stringify(scheduleFormatted);
+        }
         $.ajax({
-            url:    '/proxi/index.php',
+            url:    '/proxi/index.php?nopack=1' ,
             type:   'POST',
-            data:   'url=/schedule/add&session='+localStorage.getItem('user_session_id')+'&serviceId=1&day='+day+'&time='+JSON.stringify(scheduleFormatted),
+            data:   ((isCustomDate)?'current=yes&':'') + 'url='+url,
             success:function(){}
         });
         

@@ -222,7 +222,9 @@ var BioView = Backbone.View.extend({
             'click .bio-back' : 'bioBack',
             'click .category-jobs-item':'getJobInfo',
             'click .calendar-days-item': 'setSchedule',
-            'click ul.calendar-week li': 'getDayOfWeek'
+            'click ul.calendar-week li': 'getDayOfWeek',
+            'click .calendar-custom ul.calendar-month li': 'getCustomMonth',
+            'click .calendar-custom ul.calendar-day li': 'getCustomDay'
             //'click .login' : 'test'
         },
 
@@ -266,7 +268,7 @@ var BioView = Backbone.View.extend({
             });
             that.currentDay = 2;
             var scheduleModel = new Schedule();
-            scheduleModel.getByDay(2, 1, function(schedule){
+            scheduleModel.getByDay(2, 1, false, function(schedule){
                 for (i in schedule){
                     if (schedule[i]==0){
                         $('.calendar .calendar-days-item:eq('+i+')').removeClass('active');
@@ -424,10 +426,13 @@ var BioView = Backbone.View.extend({
             var job = new JobView({model:jobModel});
         }
     },
-    setSchedule:function(){
+        setSchedule:function(el){
         var scheduleModel = new Schedule();
-        //scheduleModel.pressHrs(this);
-        scheduleModel.pressHrs( $('.calendar-days')[0], this.currentDay );
+        if ($(el.currentTarget).parent().parent().hasClass('calendar-custom')){
+            scheduleModel.pressHrs( $('.calendar-days')[1], this.currentDay, true );
+        }else{
+            scheduleModel.pressHrs( $('.calendar-days')[0], this.currentDay, false );
+        }        
         
         
     },
@@ -435,7 +440,7 @@ var BioView = Backbone.View.extend({
         day = parseInt($('a', $(el.currentTarget)).attr('rel')) ;
         this.currentDay = day;
         var scheduleModel = new Schedule;
-        scheduleModel.getByDay(day, 1, function(schedule){
+        scheduleModel.getByDay(day, 1, false, function(schedule){
             for (i in schedule){
                 if (schedule[i]==0){
                     $('.calendar .calendar-days-item:eq('+i+')').removeClass('active');
@@ -448,6 +453,124 @@ var BioView = Backbone.View.extend({
         $(el.currentTarget).addClass('active');
         
         return false;
+    },
+    getCustomMonth: function(el){
+        var monthes = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+        e = $('a', $(el.currentTarget));
+        if (e.attr('rel')=='n'){
+            current = $('li:eq(5) a', e.parent().parent()).attr('rel');
+            if (++current>12) current = 1;
+            e.parent().before('<li><a href="" rel="'+current+'">'+monthes[current-1]+'</a></li>');
+            $('li:eq(1)', e.parent().parent()).remove();
+            if ($('li:eq(2)', e.parent().parent()).hasClass('active')){
+                $('li', $(el.currentTarget).parent()).removeClass('active');
+                $('li:eq(3)', e.parent().parent()).addClass('active');
+            }
+        }else if(e.attr('rel')=='p'){
+            current = $('li:eq(1) a', e.parent().parent()).attr('rel');
+            if (--current==0) current = 12;
+            e.parent().after('<li><a href="" rel="'+current+'">'+monthes[current-1]+'</a></li>');
+            $('li:eq(6)', e.parent().parent()).remove();
+            if ($('li:eq(4)', e.parent().parent()).hasClass('active')){
+                $('li', $(el.currentTarget).parent()).removeClass('active');
+                $('li:eq(3)', e.parent().parent()).addClass('active');
+            }
+        }else{
+            $('li', $(el.currentTarget).parent()).removeClass('active');
+            $(el.currentTarget).addClass('active');
+        }
+        //load day schedule
+        this.customCurrentDate['month'] = parseInt($('li.active a', $(el.currentTarget).parent()).attr('rel')) ;
+        var scheduleModel = new Schedule;
+        scheduleModel.getByDay(this.customCurrentDate, 1, true, function(schedule){
+            for (i in schedule){
+                if (schedule[i]==0){
+                    $('.calendar-custom .calendar-days-item:eq('+i+')').removeClass('active');
+                }else{
+                    $('.calendar-custom .calendar-days-item:eq('+i+')').addClass('active');
+                }
+            }
+        });
+        return false;
+    },
+    getCustomDay: function(el){
+        var e = $('a', $(el.currentTarget));
+        var daysInMonth = this._getMonthDaysCount($('.calendar-month li.active a').attr('rel'));
+        if (e.attr('rel')=='n'){
+            current = $('li:eq(7) a', e.parent().parent()).html();
+            if (++current>daysInMonth) {
+                current = 1;
+            }
+            if ($('li.active a', e.parent().parent()).html()=='1'){
+                //change month (inc)
+                //$('.calendar-custom ul.calendar-month li.calendar-next').click();
+            }
+            e.parent().before('<li><a href="">'+current+'</a></li>');
+            $('li:eq(1)', e.parent().parent()).remove();
+            if ($('li:eq(3)', e.parent().parent()).hasClass('active')){
+                $('li', $(el.currentTarget).parent()).removeClass('active');
+                $('li:eq(4)', e.parent().parent()).addClass('active');
+            }
+        }else if(e.attr('rel')=='p'){
+            current = $('li:eq(1) a', e.parent().parent()).html();
+            if (--current==0){
+                var currMonth = $('.calendar-month li.acitve a').attr('rel');
+                if (--currMonth <= 0) currMonth = 12;
+                current = this._getMonthDaysCount(currMonth);
+            }
+            if ($('li.active a', e.parent().parent()).html()==daysInMonth){
+                //change month (dec)
+                //$('.calendar-custom ul.calendar-month li.calendar-prev').click();
+            }
+            e.parent().after('<li><a href="" >'+current+'</a></li>');
+            $('li:eq(7)', e.parent().parent()).remove();
+            if ($('li:eq(5)', e.parent().parent()).hasClass('active')){
+                $('li', $(el.currentTarget).parent()).removeClass('active');
+                $('li:eq(4)', e.parent().parent()).addClass('active');
+            }
+        }else{
+            $('li', $(el.currentTarget).parent()).removeClass('active');
+            $(el.currentTarget).addClass('active');
+        }
+        //load day schedule
+        
+        this.customCurrentDate['day'] = parseInt($('li.active a', $(el.currentTarget).parent()).html()) ;
+        var scheduleModel = new Schedule;
+        scheduleModel.getByDay(this.customCurrentDate, 1, true, function(schedule){
+            for (i in schedule){
+                if (schedule[i]==0){
+                    $('.calendar-custom .calendar-days-item:eq('+i+')').removeClass('active');
+                }else{
+                    $('.calendar-custom .calendar-days-item:eq('+i+')').addClass('active');
+                }
+            }
+        });
+        return false;
+    },
+    _getMonthDaysCount: function(month){
+        switch (month){
+            case '1':
+            case '3':
+            case '5':
+            case '7':
+            case '8':
+            case '10':
+            case '12':
+                return 31;
+                break;
+            case '4':
+            case '6':
+            case '10':
+            case '1':
+                return 30;
+                break;
+            case '2':
+                return 28;
+                break;
+            default:
+                return 31;
+                
+        }
     }
 });
 

@@ -230,6 +230,7 @@ var BioView = Backbone.View.extend({
 
     initialize: function() {
         this.render();
+        this.customCurrentDate = {'month': '1', 'day': '1'};
     },
 
     render: function() {
